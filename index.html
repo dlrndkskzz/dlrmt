@@ -1,0 +1,427 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{max-width:480px;margin:0 auto;padding-bottom:72px;font-family:var(--font-sans)}
+.header{padding:18px 16px 0;display:flex;justify-content:space-between;align-items:flex-end}
+.header h1{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.header p{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.hbtns{display:flex;gap:6px}
+.ibtn{width:34px;height:34px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+.weather-bar{margin:12px 16px 0;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;display:flex;align-items:center;gap:12px}
+.w-icon{font-size:28px;line-height:1}
+.w-info{flex:1}
+.w-temp{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.w-desc{font-size:12px;color:var(--color-text-secondary);margin-top:1px}
+.w-extras{display:flex;gap:14px;margin-top:6px}
+.w-ext{font-size:11px;color:var(--color-text-tertiary)}
+.w-ext span{color:var(--color-text-secondary);font-weight:500}
+.w-btn{font-size:11px;color:var(--color-text-info);cursor:pointer;white-space:nowrap}
+.tabs{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:5px 13px;border-radius:20px;font-size:13px;white-space:nowrap;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s}
+.tab.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.breaking{margin:0 16px 12px;background:#FAECE7;border:0.5px solid #F0997B;border-radius:var(--border-radius-lg);padding:10px 12px;display:flex;align-items:center;gap:8px}
+.bb{background:#D85A30;color:#FAECE7;font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.bt{font-size:12px;color:#4A1B0C;line-height:1.4}
+.ai-btn{margin:0 16px 2px;width:calc(100% - 32px);padding:11px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);font-size:13px;color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.sec{font-size:13px;font-weight:500;color:var(--color-text-secondary);padding:14px 16px 8px}
+.top-card{margin:0 16px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer}
+.tc-thumb{height:150px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;position:relative}
+.tc-cat{position:absolute;top:9px;left:9px;background:rgba(0,0,0,.5);color:#fff;font-size:11px;padding:2px 9px;border-radius:20px}
+.tc-fav{position:absolute;top:9px;right:9px;background:rgba(0,0,0,.4);border:none;color:#fff;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.tc-body{padding:12px 14px}
+.tc-title{font-size:15px;font-weight:500;color:var(--color-text-primary);line-height:1.4;margin-bottom:5px}
+.tc-sum{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.tc-meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--color-text-tertiary)}
+.dot{width:3px;height:3px;border-radius:50%;background:var(--color-text-tertiary)}
+.nlist{padding:0 16px;display:flex;flex-direction:column;gap:2px}
+.ni{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.ni:hover{background:var(--color-background-secondary)}
+.ni-num{font-size:16px;font-weight:500;color:var(--color-border-secondary);min-width:22px;margin-top:1px}
+.ni-body{flex:1;min-width:0}
+.ni-cat{font-size:11px;color:var(--color-text-info);background:var(--color-background-info);padding:2px 7px;border-radius:20px;display:inline-block;margin-bottom:4px}
+.ni-title{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4;margin-bottom:2px}
+.ni-prev{font-size:12px;color:var(--color-text-secondary);line-height:1.4}
+.ni-meta{font-size:11px;color:var(--color-text-tertiary);margin-top:4px;display:flex;align-items:center;justify-content:space-between}
+.ni-fav{background:none;border:none;font-size:14px;cursor:pointer;padding:0 2px;color:var(--color-text-tertiary)}
+.expand-area{display:none;padding:4px 16px 0}
+.expand-area.open{display:block}
+.exp-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
+.exp-card p{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:8px}
+.exp-more{font-size:12px;color:var(--color-text-info);cursor:pointer}
+.ld{display:inline-flex;gap:3px}
+.ld span{width:5px;height:5px;border-radius:50%;background:var(--color-text-tertiary);animation:bo 1.2s infinite}
+.ld span:nth-child(2){animation-delay:.2s}
+.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.fav-section{display:none;padding:0 16px}
+.fav-section.show{display:block}
+.fav-empty{font-size:13px;color:var(--color-text-tertiary);padding:20px 0;text-align:center}
+.fav-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.fav-item:hover{background:var(--color-background-secondary)}
+.fav-body{flex:1;min-width:0}
+.fav-title{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
+.fav-cat{font-size:11px;color:var(--color-text-secondary);margin-top:3px}
+.fav-del{background:none;border:none;font-size:16px;cursor:pointer;color:var(--color-text-tertiary);padding:0;line-height:1}
+.nav-bar{display:flex;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);padding:8px 0 4px;margin-top:24px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0}
+.nav-icon{font-size:20px;line-height:1}
+.nav-label{font-size:10px;color:var(--color-text-tertiary)}
+.nav-item.active .nav-label{color:var(--color-text-primary);font-weight:500}
+.page{display:none}
+.page.active{display:block}
+</style>
+
+<h2 class="sr-only">날씨 연동 즐겨찾기 뉴스 앱</h2>
+
+<div class="app">
+  <div class="header">
+    <div>
+      <h1>오늘의 뉴스</h1>
+      <p id="today-date"></p>
+    </div>
+    <div class="hbtns">
+      <button class="ibtn" onclick="sendPrompt('특정 키워드로 오늘 뉴스 검색해줘')">🔍</button>
+      <button class="ibtn" onclick="toggleNotif(this)" id="notif-btn">🔔</button>
+    </div>
+  </div>
+
+  <div class="weather-bar" id="weather-bar">
+    <div class="w-icon" id="w-icon">⏳</div>
+    <div class="w-info">
+      <div style="display:flex;align-items:baseline;gap:8px">
+        <span class="w-temp" id="w-temp">--°</span>
+        <span style="font-size:12px;color:var(--color-text-secondary)" id="w-city">서울</span>
+      </div>
+      <div class="w-desc" id="w-desc">날씨 불러오는 중...</div>
+      <div class="w-extras">
+        <div class="w-ext">습도 <span id="w-hum">--%</span></div>
+        <div class="w-ext">바람 <span id="w-wind">--m/s</span></div>
+        <div class="w-ext">체감 <span id="w-feel">--°</span></div>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:11px;color:var(--color-text-tertiary)" id="w-hi-lo"></div>
+      <button class="w-btn" onclick="sendPrompt('오늘 서울 날씨에 맞는 옷차림 추천해줘')" style="margin-top:6px">옷차림 추천 ↗</button>
+    </div>
+  </div>
+
+  <div id="page-home" class="page active">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'전체')">전체</div>
+      <div class="tab" onclick="setTab(this,'정치')">정치</div>
+      <div class="tab" onclick="setTab(this,'경제')">경제</div>
+      <div class="tab" onclick="setTab(this,'사회')">사회</div>
+      <div class="tab" onclick="setTab(this,'국제')">국제</div>
+      <div class="tab" onclick="setTab(this,'과학·IT')">과학·IT</div>
+      <div class="tab" onclick="setTab(this,'스포츠')">스포츠</div>
+    </div>
+
+    <div class="breaking">
+      <span class="bb">속보</span>
+      <span class="bt" id="breaking-text">AI 브리핑 버튼을 눌러 오늘 뉴스를 확인하세요</span>
+    </div>
+
+    <button class="ai-btn" id="brief-btn" onclick="loadBriefing()">
+      <span id="brief-icon">✨</span>
+      <span id="brief-label">AI 뉴스 브리핑 받기 ↗</span>
+    </button>
+    <div class="expand-area" id="brief-area">
+      <div class="exp-card">
+        <p id="brief-content"></p>
+        <span class="exp-more" onclick="sendPrompt('오늘 뉴스 더 자세히 알려줘')">더 알아보기 →</span>
+      </div>
+    </div>
+
+    <div class="sec">오늘의 헤드라인</div>
+    <div class="top-card" id="top-card">
+      <div class="tc-thumb" id="tc-thumb">
+        <span class="tc-cat" id="tc-cat">--</span>
+        <button class="tc-fav" id="tc-fav-btn" onclick="favTopCard(event)">☆</button>
+        <span id="tc-emoji" style="font-size:52px">📰</span>
+      </div>
+      <div class="tc-body" onclick="openTop()">
+        <p class="tc-title" id="tc-title">AI 브리핑을 눌러 헤드라인을 확인하세요</p>
+        <p class="tc-sum" id="tc-sum">매일 최신 뉴스를 AI가 요약해 드립니다.</p>
+        <div class="tc-meta">
+          <span id="tc-src">뉴스 앱</span><div class="dot"></div><span id="tc-time">오늘</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">주요 뉴스</div>
+    <div class="nlist" id="news-list">
+      <div class="ni" style="justify-content:center;padding:20px">
+        <span style="font-size:12px;color:var(--color-text-tertiary)">AI 브리핑을 먼저 받으면 주요 뉴스가 표시됩니다</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-fav" class="page">
+    <div style="padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:16px;font-weight:500;color:var(--color-text-primary)">즐겨찾기</span>
+      <span style="font-size:12px;color:var(--color-text-tertiary)" id="fav-count">0개</span>
+    </div>
+    <div class="fav-section show" id="fav-list">
+      <div class="fav-empty">아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>
+    </div>
+  </div>
+
+  <div id="page-settings" class="page">
+    <div style="padding:14px 16px 8px">
+      <span style="font-size:16px;font-weight:500;color:var(--color-text-primary)">설정</span>
+    </div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:2px">
+      <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px">
+        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px">날씨 위치</div>
+        <div style="display:flex;gap:8px">
+          <input id="city-input" type="text" placeholder="도시 입력 (예: 부산)" style="flex:1;font-size:13px;padding:0 10px;height:34px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary)">
+          <button onclick="changeCity()" style="padding:0 14px;height:34px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer">변경</button>
+        </div>
+      </div>
+      <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px">
+        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px">관심 카테고리</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px" id="cat-picks">
+          <span class="tab active" onclick="toggleCat(this)" style="font-size:12px">정치</span>
+          <span class="tab active" onclick="toggleCat(this)" style="font-size:12px">경제</span>
+          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">사회</span>
+          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">국제</span>
+          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">과학·IT</span>
+          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">스포츠</span>
+          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">연예</span>
+        </div>
+      </div>
+      <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px">
+        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">뉴스 브리핑 요청</div>
+        <button onclick="sendPrompt('오늘 관심 카테고리 뉴스 전체 요약해줘')" style="width:100%;padding:9px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;margin-top:6px">맞춤 브리핑 요청 ↗</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-item active" onclick="goPage('home',this)" id="nav-home">
+      <span class="nav-icon">📰</span>
+      <span class="nav-label">뉴스</span>
+    </div>
+    <div class="nav-item" onclick="goPage('fav',this)" id="nav-fav">
+      <span class="nav-icon">☆</span>
+      <span class="nav-label">즐겨찾기</span>
+    </div>
+    <div class="nav-item" onclick="goPage('settings',this)" id="nav-settings">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">설정</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const today = new Date();
+const days=['일','월','화','수','목','금','토'];
+document.getElementById('today-date').textContent=`${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 (${days[today.getDay()]})`;
+
+let favorites = [];
+let topCardData = null;
+let briefLoaded = false;
+let currentCity = '서울';
+
+function goPage(name, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='fav') renderFavs();
+}
+
+function setTab(el, name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  if(name!=='전체') sendPrompt(`오늘 ${name} 관련 뉴스 사건사고 요약해줘`);
+}
+
+function toggleCat(el) { el.classList.toggle('active'); }
+
+function toggleNotif(btn) {
+  btn.textContent = btn.textContent==='🔔' ? '🔕' : '🔔';
+}
+
+async function loadWeather(city) {
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        tools:[{type:'web_search_20250305',name:'web_search'}],
+        system:'날씨 정보를 JSON으로만 반환. 형식: {"icon":"날씨 이모지","temp":숫자,"feels":숫자,"desc":"날씨설명","humidity":숫자,"wind":숫자,"high":숫자,"low":숫자} 마크다운 없이 JSON만.',
+        messages:[{role:'user',content:`${city} 현재 날씨 검색해서 JSON으로 줘`}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const clean = text.replace(/```json|```/g,'').trim();
+    const w = JSON.parse(clean);
+    document.getElementById('w-icon').textContent = w.icon||'🌤';
+    document.getElementById('w-temp').textContent = Math.round(w.temp)+'°';
+    document.getElementById('w-city').textContent = city;
+    document.getElementById('w-desc').textContent = w.desc||'';
+    document.getElementById('w-hum').textContent = Math.round(w.humidity)+'%';
+    document.getElementById('w-wind').textContent = w.wind+'m/s';
+    document.getElementById('w-feel').textContent = Math.round(w.feels)+'°';
+    document.getElementById('w-hi-lo').textContent = `최고 ${Math.round(w.high)}° / 최저 ${Math.round(w.low)}°`;
+  } catch(e) {
+    document.getElementById('w-desc').textContent = '날씨 정보를 불러올 수 없어요';
+  }
+}
+
+function changeCity() {
+  const v = document.getElementById('city-input').value.trim();
+  if(v) { currentCity=v; loadWeather(v); }
+}
+
+async function loadBriefing() {
+  if(briefLoaded) return;
+  const btn=document.getElementById('brief-btn');
+  document.getElementById('brief-label').innerHTML='<span class="ld"><span></span><span></span><span></span></span>';
+  document.getElementById('brief-icon').textContent='';
+  btn.disabled=true;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1200,
+        tools:[{type:'web_search_20250305',name:'web_search'}],
+        system:`뉴스 브리핑 AI. 오늘: ${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일. JSON만 반환, 마크다운 없이.
+형식: {"breaking":"속보 20자","headline":{"title":"제목","summary":"2-3문장","category":"카테고리","source":"언론사","emoji":"이모지","bg":"#hex"},"items":[{"cat":"카테고리","title":"제목","preview":"한줄요약","source":"언론사","time":"시간전"},...],"briefing":"전체브리핑 2-3문장"}
+items 5개. 실제 오늘 뉴스 기반.`,
+        messages:[{role:'user',content:`오늘 ${today.getMonth()+1}월 ${today.getDate()}일 한국 주요 뉴스 검색해서 JSON 브리핑 줘`}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const clean = text.replace(/```json|```/g,'').trim();
+    const p = JSON.parse(clean);
+
+    document.getElementById('breaking-text').textContent = p.breaking||'오늘의 속보';
+    document.getElementById('tc-cat').textContent = p.headline.category;
+    document.getElementById('tc-emoji').textContent = p.headline.emoji||'📰';
+    document.getElementById('tc-title').textContent = p.headline.title;
+    document.getElementById('tc-sum').textContent = p.headline.summary;
+    document.getElementById('tc-src').textContent = p.headline.source;
+    document.getElementById('tc-time').textContent = '오늘';
+    if(p.headline.bg) document.getElementById('tc-thumb').style.background=p.headline.bg;
+    document.getElementById('brief-content').textContent = p.briefing;
+    topCardData = p.headline;
+
+    const list = document.getElementById('news-list');
+    list.innerHTML='';
+    (p.items||[]).forEach((item,i)=>{
+      const el=document.createElement('div');
+      el.className='ni';
+      const favId='item_'+i+'_'+Date.now();
+      el.innerHTML=`
+        <span class="ni-num">${i+1}</span>
+        <div class="ni-body">
+          <span class="ni-cat">${item.cat}</span>
+          <p class="ni-title">${item.title}</p>
+          <p class="ni-prev">${item.preview}</p>
+          <div class="ni-meta">
+            <span>${item.source} · ${item.time}</span>
+            <button class="ni-fav" id="fav_${favId}" onclick="toggleFav(event,'${favId}','${item.title.replace(/'/g,"\\'")}','${item.cat}')">☆</button>
+          </div>
+        </div>`;
+      el.querySelector('.ni-body .ni-title').onclick=()=>sendPrompt(`"${item.title}" 뉴스 자세히 알려줘`);
+      list.appendChild(el);
+    });
+
+    document.getElementById('brief-area').classList.add('open');
+    document.getElementById('brief-label').textContent='브리핑 완료 ✓';
+    document.getElementById('brief-icon').textContent='';
+    briefLoaded=true;
+  } catch(e) {
+    document.getElementById('brief-label').textContent='AI 뉴스 브리핑 받기 ↗';
+    document.getElementById('brief-icon').textContent='✨';
+    btn.disabled=false;
+  }
+}
+
+function toggleFav(e, id, title, cat) {
+  e.stopPropagation();
+  const btn = document.getElementById('fav_'+id);
+  const idx = favorites.findIndex(f=>f.id===id);
+  if(idx===-1) {
+    favorites.push({id, title, cat});
+    btn.textContent='★';
+    btn.style.color='#EF9F27';
+  } else {
+    favorites.splice(idx,1);
+    btn.textContent='☆';
+    btn.style.color='';
+  }
+  updateFavCount();
+}
+
+function favTopCard(e) {
+  e.stopPropagation();
+  if(!topCardData) return;
+  const btn = document.getElementById('tc-fav-btn');
+  const id='top_headline';
+  const idx = favorites.findIndex(f=>f.id===id);
+  if(idx===-1) {
+    favorites.push({id, title:topCardData.title, cat:topCardData.category});
+    btn.textContent='★'; btn.style.color='#EF9F27';
+  } else {
+    favorites.splice(idx,1);
+    btn.textContent='☆'; btn.style.color='';
+  }
+  updateFavCount();
+}
+
+function openTop() {
+  if(!topCardData) return;
+  sendPrompt(`"${topCardData.title}" 뉴스 자세히 알려줘`);
+}
+
+function updateFavCount() {
+  document.getElementById('fav-count').textContent=favorites.length+'개';
+  const navFav=document.querySelector('#nav-fav .nav-icon');
+  navFav.textContent=favorites.length>0?'★':'☆';
+}
+
+function renderFavs() {
+  const container=document.getElementById('fav-list');
+  if(favorites.length===0){
+    container.innerHTML='<div class="fav-empty">아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>';
+    return;
+  }
+  container.innerHTML='';
+  favorites.forEach(f=>{
+    const el=document.createElement('div');
+    el.className='fav-item';
+    el.innerHTML=`
+      <div class="fav-body">
+        <div class="fav-title">${f.title}</div>
+        <div class="fav-cat">${f.cat}</div>
+      </div>
+      <button class="fav-del" onclick="removeFav('${f.id}')">✕</button>`;
+    el.querySelector('.fav-body').onclick=()=>sendPrompt(`"${f.title}" 뉴스 자세히 알려줘`);
+    container.appendChild(el);
+  });
+}
+
+function removeFav(id) {
+  favorites=favorites.filter(f=>f.id!==id);
+  updateFavCount();
+  renderFavs();
+  const btn=document.getElementById('fav_'+id);
+  if(btn){btn.textContent='☆';btn.style.color='';}
+  if(id==='top_headline'){
+    document.getElementById('tc-fav-btn').textContent='☆';
+    document.getElementById('tc-fav-btn').style.color='';
+  }
+}
+
+loadWeather(currentCity);
+</script>
