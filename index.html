@@ -1,274 +1,464 @@
-
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>오늘의 뉴스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-.app{max-width:480px;margin:0 auto;padding-bottom:72px;font-family:var(--font-sans)}
-.header{padding:18px 16px 0;display:flex;justify-content:space-between;align-items:flex-end}
-.header h1{font-size:22px;font-weight:500;color:var(--color-text-primary)}
-.header p{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
-.hbtns{display:flex;gap:6px}
-.ibtn{width:34px;height:34px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
-.weather-bar{margin:12px 16px 0;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;display:flex;align-items:center;gap:12px}
-.w-icon{font-size:28px;line-height:1}
-.w-info{flex:1}
-.w-temp{font-size:20px;font-weight:500;color:var(--color-text-primary)}
-.w-desc{font-size:12px;color:var(--color-text-secondary);margin-top:1px}
-.w-extras{display:flex;gap:14px;margin-top:6px}
-.w-ext{font-size:11px;color:var(--color-text-tertiary)}
-.w-ext span{color:var(--color-text-secondary);font-weight:500}
-.w-btn{font-size:11px;color:var(--color-text-info);cursor:pointer;white-space:nowrap}
-.tabs{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:5px 13px;border-radius:20px;font-size:13px;white-space:nowrap;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s}
-.tab.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
-.breaking{margin:0 16px 12px;background:#FAECE7;border:0.5px solid #F0997B;border-radius:var(--border-radius-lg);padding:10px 12px;display:flex;align-items:center;gap:8px}
-.bb{background:#D85A30;color:#FAECE7;font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.bt{font-size:12px;color:#4A1B0C;line-height:1.4}
-.ai-btn{margin:0 16px 2px;width:calc(100% - 32px);padding:11px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);font-size:13px;color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
-.sec{font-size:13px;font-weight:500;color:var(--color-text-secondary);padding:14px 16px 8px}
-.top-card{margin:0 16px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer}
-.tc-thumb{height:150px;background:#E1F5EE;display:flex;align-items:center;justify-content:center;position:relative}
-.tc-cat{position:absolute;top:9px;left:9px;background:rgba(0,0,0,.5);color:#fff;font-size:11px;padding:2px 9px;border-radius:20px}
-.tc-fav{position:absolute;top:9px;right:9px;background:rgba(0,0,0,.4);border:none;color:#fff;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.tc-body{padding:12px 14px}
-.tc-title{font-size:15px;font-weight:500;color:var(--color-text-primary);line-height:1.4;margin-bottom:5px}
-.tc-sum{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
-.tc-meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--color-text-tertiary)}
-.dot{width:3px;height:3px;border-radius:50%;background:var(--color-text-tertiary)}
-.nlist{padding:0 16px;display:flex;flex-direction:column;gap:2px}
-.ni{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
-.ni:hover{background:var(--color-background-secondary)}
-.ni-num{font-size:16px;font-weight:500;color:var(--color-border-secondary);min-width:22px;margin-top:1px}
-.ni-body{flex:1;min-width:0}
-.ni-cat{font-size:11px;color:var(--color-text-info);background:var(--color-background-info);padding:2px 7px;border-radius:20px;display:inline-block;margin-bottom:4px}
-.ni-title{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4;margin-bottom:2px}
-.ni-prev{font-size:12px;color:var(--color-text-secondary);line-height:1.4}
-.ni-meta{font-size:11px;color:var(--color-text-tertiary);margin-top:4px;display:flex;align-items:center;justify-content:space-between}
-.ni-fav{background:none;border:none;font-size:14px;cursor:pointer;padding:0 2px;color:var(--color-text-tertiary)}
-.expand-area{display:none;padding:4px 16px 0}
-.expand-area.open{display:block}
-.exp-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px}
-.exp-card p{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:8px}
-.exp-more{font-size:12px;color:var(--color-text-info);cursor:pointer}
-.ld{display:inline-flex;gap:3px}
-.ld span{width:5px;height:5px;border-radius:50%;background:var(--color-text-tertiary);animation:bo 1.2s infinite}
-.ld span:nth-child(2){animation-delay:.2s}
-.ld span:nth-child(3){animation-delay:.4s}
-@keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
-.fav-section{display:none;padding:0 16px}
-.fav-section.show{display:block}
-.fav-empty{font-size:13px;color:var(--color-text-tertiary);padding:20px 0;text-align:center}
-.fav-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
-.fav-item:hover{background:var(--color-background-secondary)}
-.fav-body{flex:1;min-width:0}
-.fav-title{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
-.fav-cat{font-size:11px;color:var(--color-text-secondary);margin-top:3px}
-.fav-del{background:none;border:none;font-size:16px;cursor:pointer;color:var(--color-text-tertiary);padding:0;line-height:1}
-.nav-bar{display:flex;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);padding:8px 0 4px;margin-top:24px}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0}
-.nav-icon{font-size:20px;line-height:1}
-.nav-label{font-size:10px;color:var(--color-text-tertiary)}
-.nav-item.active .nav-label{color:var(--color-text-primary);font-weight:500}
-.page{display:none}
-.page.active{display:block}
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface2: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f0;
+    --text2: #888;
+    --text3: #555;
+    --accent: #e8ff47;
+    --accent-dim: rgba(232,255,71,0.12);
+    --red: #ff4d4d;
+    --red-dim: rgba(255,77,77,0.12);
+    --blue: #4d9fff;
+    --blue-dim: rgba(77,159,255,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; overflow: hidden; }
+
+  /* APP SHELL */
+  #app { display: flex; flex-direction: column; height: 100vh; max-width: 480px; margin: 0 auto; position: relative; background: var(--bg); }
+
+  /* HEADER */
+  .header { padding: 16px 18px 12px; display: flex; align-items: flex-end; justify-content: space-between; flex-shrink: 0; border-bottom: 0.5px solid var(--border); }
+  .header-brand { display: flex; flex-direction: column; }
+  .header-brand .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); line-height: 1; }
+  .header-brand .date { font-size: 11px; color: var(--text3); margin-top: 3px; letter-spacing: 0.5px; }
+  .header-actions { display: flex; gap: 8px; }
+  .hbtn { width: 36px; height: 36px; border-radius: 10px; border: 0.5px solid var(--border2); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.2s; }
+  .hbtn:hover { background: var(--surface2); }
+
+  /* WEATHER */
+  .weather-strip { margin: 12px; border-radius: 14px; background: var(--surface); border: 0.5px solid var(--border2); padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .w-icon { font-size: 32px; line-height: 1; }
+  .w-main { flex: 1; }
+  .w-row1 { display: flex; align-items: baseline; gap: 8px; }
+  .w-temp { font-size: 22px; font-weight: 700; color: var(--text); }
+  .w-city { font-size: 12px; color: var(--text2); }
+  .w-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .w-extras { display: flex; gap: 12px; margin-top: 6px; }
+  .w-ext { font-size: 10px; color: var(--text3); }
+  .w-ext b { color: var(--text2); font-weight: 500; }
+  .w-right { text-align: right; }
+  .w-hilo { font-size: 11px; color: var(--text3); }
+  .w-outfit-btn { font-size: 11px; color: var(--accent); cursor: pointer; margin-top: 6px; display: block; border: none; background: none; font-family: inherit; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 6px; padding: 10px 12px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: inherit; white-space: nowrap; cursor: pointer; border: 0.5px solid var(--border2); background: transparent; color: var(--text2); transition: all 0.2s; }
+  .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+
+  /* SCROLLABLE CONTENT */
+  .content { flex: 1; overflow-y: auto; scrollbar-width: none; padding-bottom: 12px; }
+  .content::-webkit-scrollbar { display: none; }
+
+  /* BREAKING */
+  .breaking { margin: 0 12px 10px; background: var(--red-dim); border: 0.5px solid rgba(255,77,77,0.3); border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+  .breaking-badge { background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.5px; }
+  .breaking-text { font-size: 12px; color: #ffaaaa; line-height: 1.4; }
+
+  /* BRIEF BTN */
+  .brief-btn { margin: 0 12px 4px; padding: 13px; border-radius: 14px; border: 0.5px solid rgba(232,255,71,0.3); background: var(--accent-dim); font-size: 13px; font-family: inherit; font-weight: 500; color: var(--accent); cursor: pointer; width: calc(100% - 24px); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+  .brief-btn:hover { background: rgba(232,255,71,0.18); }
+  .brief-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* BRIEFING RESULT */
+  .brief-result { display: none; margin: 4px 12px 0; background: var(--surface); border: 0.5px solid var(--border2); border-radius: 14px; padding: 14px; }
+  .brief-result.open { display: block; }
+  .brief-result p { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .brief-more { font-size: 12px; color: var(--accent); cursor: pointer; background: none; border: none; font-family: inherit; margin-top: 10px; display: block; }
+
+  /* SEC TITLE */
+  .sec { font-size: 11px; font-weight: 700; color: var(--text3); letter-spacing: 1.5px; padding: 14px 18px 8px; text-transform: uppercase; }
+
+  /* TOP CARD */
+  .top-card { margin: 0 12px 4px; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--border2); cursor: pointer; background: var(--surface); }
+  .tc-thumb { height: 160px; background: #1a2a1a; display: flex; align-items: center; justify-content: center; position: relative; }
+  .tc-thumb-emoji { font-size: 60px; }
+  .tc-category { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: var(--text2); font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 0.5px solid var(--border2); }
+  .tc-fav { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); border: 0.5px solid var(--border2); color: var(--text2); font-size: 16px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .tc-fav.starred { color: var(--accent); border-color: var(--accent); }
+  .tc-body { padding: 14px; }
+  .tc-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
+  .tc-sum { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .tc-meta { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; color: var(--text3); }
+  .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); }
+
+  /* NEWS LIST */
+  .nlist { padding: 0 12px; display: flex; flex-direction: column; gap: 4px; }
+  .ni { background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 13px; cursor: pointer; display: flex; gap: 10px; align-items: flex-start; transition: background 0.15s; }
+  .ni:active { background: var(--surface2); }
+  .ni-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--text3); min-width: 20px; line-height: 1.1; }
+  .ni-body { flex: 1; min-width: 0; }
+  .ni-cat { font-size: 10px; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 5px; font-weight: 700; letter-spacing: 0.5px; }
+  .ni-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.45; margin-bottom: 3px; }
+  .ni-prev { font-size: 11px; color: var(--text3); line-height: 1.45; }
+  .ni-meta { font-size: 11px; color: var(--text3); margin-top: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .ni-fav-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text3); transition: color 0.2s; }
+  .ni-fav-btn.starred { color: var(--accent); }
+
+  /* FAVORITES PAGE */
+  #page-fav { display: none; }
+  .fav-header { padding: 14px 18px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .fav-header span { font-size: 18px; font-weight: 700; color: var(--text); }
+  .fav-count-badge { font-size: 12px; color: var(--text3); background: var(--surface2); padding: 3px 10px; border-radius: 20px; }
+  .fav-empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; line-height: 1.8; }
+  .fav-empty .fav-empty-icon { font-size: 36px; display: block; margin-bottom: 12px; }
+  .fav-item { margin: 0 12px 4px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 13px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; transition: background 0.15s; }
+  .fav-item:active { background: var(--surface2); }
+  .fav-item-body { flex: 1; min-width: 0; }
+  .fav-item-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+  .fav-item-cat { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .fav-del { background: none; border: none; font-size: 18px; color: var(--text3); cursor: pointer; padding: 0; line-height: 1; }
+
+  /* SETTINGS PAGE */
+  #page-settings { display: none; }
+  .settings-header { padding: 14px 18px 10px; }
+  .settings-header span { font-size: 18px; font-weight: 700; color: var(--text); }
+  .settings-section { margin: 0 12px 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .settings-row { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid var(--border); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-label { font-size: 13px; color: var(--text); }
+  .settings-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+  .settings-input { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 8px; color: var(--text); font-size: 13px; font-family: inherit; padding: 6px 10px; width: 130px; }
+  .settings-btn { background: var(--accent-dim); border: 0.5px solid rgba(232,255,71,0.3); border-radius: 8px; color: var(--accent); font-size: 12px; font-family: inherit; font-weight: 500; padding: 6px 12px; cursor: pointer; }
+  .cat-grid { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 16px; }
+  .toggle { width: 40px; height: 22px; background: var(--surface2); border-radius: 11px; position: relative; cursor: pointer; border: 0.5px solid var(--border2); transition: background 0.2s; }
+  .toggle.on { background: var(--accent); }
+  .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--text3); transition: all 0.2s; }
+  .toggle.on::after { left: 20px; background: #000; }
+
+  /* NAV BAR */
+  .nav-bar { display: flex; border-top: 0.5px solid var(--border); background: var(--surface); flex-shrink: 0; padding: 6px 0 max(6px, env(safe-area-inset-bottom)); }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
+  .nav-icon { font-size: 20px; line-height: 1; }
+  .nav-label { font-size: 10px; color: var(--text3); transition: color 0.2s; }
+  .nav-item.active .nav-label { color: var(--accent); font-weight: 700; }
+  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); display: none; margin: 0 auto; }
+  .nav-item.active .nav-dot { display: block; }
+
+  /* LOADING DOTS */
+  .ld { display: inline-flex; gap: 4px; align-items: center; }
+  .ld span { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: bo 1.2s infinite; }
+  .ld span:nth-child(2) { animation-delay: .2s; }
+  .ld span:nth-child(3) { animation-delay: .4s; }
+  @keyframes bo { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+  /* TOAST */
+  .toast { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 20px; padding: 8px 16px; font-size: 12px; color: var(--text2); opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; z-index: 100; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* API KEY MODAL */
+  .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+  .modal-overlay.hidden { display: none; }
+  .modal { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 20px; padding: 24px; width: 100%; max-width: 360px; }
+  .modal h2 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .modal p { font-size: 12px; color: var(--text3); line-height: 1.7; margin-bottom: 16px; }
+  .modal input { width: 100%; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 10px; color: var(--text); font-size: 13px; font-family: inherit; padding: 10px 12px; margin-bottom: 10px; }
+  .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent); color: #000; font-size: 14px; font-family: inherit; font-weight: 700; cursor: pointer; }
+  .modal-note { font-size: 11px; color: var(--text3); text-align: center; margin-top: 10px; }
+  .modal-note a { color: var(--accent); }
+
+  /* PAGE TRANSITIONS */
+  #page-home, #page-fav, #page-settings { animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 </style>
+</head>
+<body>
+<div id="app">
 
-<h2 class="sr-only">날씨 연동 즐겨찾기 뉴스 앱</h2>
-
-<div class="app">
-  <div class="header">
-    <div>
-      <h1>오늘의 뉴스</h1>
-      <p id="today-date"></p>
-    </div>
-    <div class="hbtns">
-      <button class="ibtn" onclick="sendPrompt('특정 키워드로 오늘 뉴스 검색해줘')">🔍</button>
-      <button class="ibtn" onclick="toggleNotif(this)" id="notif-btn">🔔</button>
+  <!-- API KEY MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2>🗝️ API 키 설정</h2>
+      <p>앱을 사용하려면 Anthropic API 키가 필요해요.<br>키는 기기에만 저장되며 외부로 전송되지 않아요.</p>
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off">
+      <button class="modal-btn" onclick="saveApiKey()">저장하고 시작하기</button>
+      <p class="modal-note">키 발급: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
     </div>
   </div>
 
-  <div class="weather-bar" id="weather-bar">
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-brand">
+      <div class="logo">NEWSLY</div>
+      <div class="date" id="header-date"></div>
+    </div>
+    <div class="header-actions">
+      <button class="hbtn" id="notif-btn" onclick="toggleNotif(this)" title="알림">🔔</button>
+      <button class="hbtn" onclick="resetApiKey()" title="API 키 변경">🔑</button>
+    </div>
+  </div>
+
+  <!-- WEATHER -->
+  <div class="weather-strip" id="weather-strip">
     <div class="w-icon" id="w-icon">⏳</div>
-    <div class="w-info">
-      <div style="display:flex;align-items:baseline;gap:8px">
+    <div class="w-main">
+      <div class="w-row1">
         <span class="w-temp" id="w-temp">--°</span>
-        <span style="font-size:12px;color:var(--color-text-secondary)" id="w-city">서울</span>
+        <span class="w-city" id="w-city">서울</span>
       </div>
       <div class="w-desc" id="w-desc">날씨 불러오는 중...</div>
       <div class="w-extras">
-        <div class="w-ext">습도 <span id="w-hum">--%</span></div>
-        <div class="w-ext">바람 <span id="w-wind">--m/s</span></div>
-        <div class="w-ext">체감 <span id="w-feel">--°</span></div>
+        <div class="w-ext">습도 <b id="w-hum">--%</b></div>
+        <div class="w-ext">바람 <b id="w-wind">--m/s</b></div>
+        <div class="w-ext">체감 <b id="w-feel">--°</b></div>
       </div>
     </div>
-    <div style="text-align:right">
-      <div style="font-size:11px;color:var(--color-text-tertiary)" id="w-hi-lo"></div>
-      <button class="w-btn" onclick="sendPrompt('오늘 서울 날씨에 맞는 옷차림 추천해줘')" style="margin-top:6px">옷차림 추천 ↗</button>
+    <div class="w-right">
+      <div class="w-hilo" id="w-hilo">최고 --° / 최저 --°</div>
+      <button class="w-outfit-btn" onclick="askOutfit()">옷차림 추천 →</button>
     </div>
   </div>
 
-  <div id="page-home" class="page active">
-    <div class="tabs">
-      <div class="tab active" onclick="setTab(this,'전체')">전체</div>
-      <div class="tab" onclick="setTab(this,'정치')">정치</div>
-      <div class="tab" onclick="setTab(this,'경제')">경제</div>
-      <div class="tab" onclick="setTab(this,'사회')">사회</div>
-      <div class="tab" onclick="setTab(this,'국제')">국제</div>
-      <div class="tab" onclick="setTab(this,'과학·IT')">과학·IT</div>
-      <div class="tab" onclick="setTab(this,'스포츠')">스포츠</div>
+  <!-- TABS -->
+  <div class="tabs" id="cat-tabs">
+    <button class="tab-btn active" onclick="setTab(this,'전체')">전체</button>
+    <button class="tab-btn" onclick="setTab(this,'정치')">정치</button>
+    <button class="tab-btn" onclick="setTab(this,'경제')">경제</button>
+    <button class="tab-btn" onclick="setTab(this,'사회')">사회</button>
+    <button class="tab-btn" onclick="setTab(this,'국제')">국제</button>
+    <button class="tab-btn" onclick="setTab(this,'과학·IT')">과학·IT</button>
+    <button class="tab-btn" onclick="setTab(this,'스포츠')">스포츠</button>
+    <button class="tab-btn" onclick="setTab(this,'연예')">연예</button>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div class="content" id="page-home">
+    <div class="breaking" id="breaking-bar">
+      <span class="breaking-badge">속보</span>
+      <span class="breaking-text" id="breaking-text">AI 브리핑을 눌러 오늘 뉴스를 확인하세요</span>
     </div>
 
-    <div class="breaking">
-      <span class="bb">속보</span>
-      <span class="bt" id="breaking-text">AI 브리핑 버튼을 눌러 오늘 뉴스를 확인하세요</span>
-    </div>
-
-    <button class="ai-btn" id="brief-btn" onclick="loadBriefing()">
+    <button class="brief-btn" id="brief-btn" onclick="loadBriefing()">
       <span id="brief-icon">✨</span>
-      <span id="brief-label">AI 뉴스 브리핑 받기 ↗</span>
+      <span id="brief-label">AI 뉴스 브리핑 받기</span>
     </button>
-    <div class="expand-area" id="brief-area">
-      <div class="exp-card">
-        <p id="brief-content"></p>
-        <span class="exp-more" onclick="sendPrompt('오늘 뉴스 더 자세히 알려줘')">더 알아보기 →</span>
-      </div>
+    <div class="brief-result" id="brief-result">
+      <p id="brief-text"></p>
+      <button class="brief-more" onclick="openChat('오늘 뉴스 전체 브리핑 더 자세히 해줘')">더 자세히 알아보기 →</button>
     </div>
 
     <div class="sec">오늘의 헤드라인</div>
-    <div class="top-card" id="top-card">
+    <div class="top-card">
       <div class="tc-thumb" id="tc-thumb">
-        <span class="tc-cat" id="tc-cat">--</span>
-        <button class="tc-fav" id="tc-fav-btn" onclick="favTopCard(event)">☆</button>
-        <span id="tc-emoji" style="font-size:52px">📰</span>
+        <span class="tc-category" id="tc-cat">--</span>
+        <button class="tc-fav" id="tc-fav-btn" onclick="favTopCard()">☆</button>
+        <span class="tc-thumb-emoji" id="tc-emoji">📰</span>
       </div>
-      <div class="tc-body" onclick="openTop()">
+      <div class="tc-body" onclick="openTopCard()">
         <p class="tc-title" id="tc-title">AI 브리핑을 눌러 헤드라인을 확인하세요</p>
-        <p class="tc-sum" id="tc-sum">매일 최신 뉴스를 AI가 요약해 드립니다.</p>
+        <p class="tc-sum" id="tc-sum">매일 아침 최신 뉴스를 AI가 요약해 드립니다.</p>
         <div class="tc-meta">
-          <span id="tc-src">뉴스 앱</span><div class="dot"></div><span id="tc-time">오늘</span>
+          <span id="tc-src">뉴스</span>
+          <div class="dot"></div>
+          <span id="tc-time">오늘</span>
         </div>
       </div>
     </div>
 
     <div class="sec">주요 뉴스</div>
     <div class="nlist" id="news-list">
-      <div class="ni" style="justify-content:center;padding:20px">
-        <span style="font-size:12px;color:var(--color-text-tertiary)">AI 브리핑을 먼저 받으면 주요 뉴스가 표시됩니다</span>
+      <div class="ni" style="justify-content:center;padding:24px">
+        <span style="font-size:12px;color:var(--text3)">AI 브리핑을 받으면 주요 뉴스가 표시됩니다</span>
       </div>
     </div>
   </div>
 
-  <div id="page-fav" class="page">
-    <div style="padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:16px;font-weight:500;color:var(--color-text-primary)">즐겨찾기</span>
-      <span style="font-size:12px;color:var(--color-text-tertiary)" id="fav-count">0개</span>
+  <!-- FAV PAGE -->
+  <div class="content" id="page-fav" style="display:none">
+    <div class="fav-header">
+      <span>즐겨찾기</span>
+      <span class="fav-count-badge" id="fav-count-badge">0개</span>
     </div>
-    <div class="fav-section show" id="fav-list">
-      <div class="fav-empty">아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>
-    </div>
+    <div id="fav-list"></div>
   </div>
 
-  <div id="page-settings" class="page">
-    <div style="padding:14px 16px 8px">
-      <span style="font-size:16px;font-weight:500;color:var(--color-text-primary)">설정</span>
-    </div>
-    <div style="padding:0 16px;display:flex;flex-direction:column;gap:2px">
-      <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px">
-        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px">날씨 위치</div>
-        <div style="display:flex;gap:8px">
-          <input id="city-input" type="text" placeholder="도시 입력 (예: 부산)" style="flex:1;font-size:13px;padding:0 10px;height:34px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary)">
-          <button onclick="changeCity()" style="padding:0 14px;height:34px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer">변경</button>
+  <!-- SETTINGS PAGE -->
+  <div class="content" id="page-settings" style="display:none">
+    <div class="settings-header"><span>설정</span></div>
+
+    <div class="settings-section">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">날씨 도시</div>
+          <div class="settings-sub">현재: <span id="cur-city-label">서울</span></div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input class="settings-input" id="city-input" placeholder="도시명 입력" value="서울">
+          <button class="settings-btn" onclick="changeCity()">변경</button>
         </div>
       </div>
-      <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px">
-        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px">관심 카테고리</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px" id="cat-picks">
-          <span class="tab active" onclick="toggleCat(this)" style="font-size:12px">정치</span>
-          <span class="tab active" onclick="toggleCat(this)" style="font-size:12px">경제</span>
-          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">사회</span>
-          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">국제</span>
-          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">과학·IT</span>
-          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">스포츠</span>
-          <span class="tab" onclick="toggleCat(this)" style="font-size:12px">연예</span>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">알림</div>
+          <div class="settings-sub">매일 아침 브리핑 알림</div>
         </div>
+        <div class="toggle" id="notif-toggle" onclick="this.classList.toggle('on')"></div>
       </div>
-      <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px">
-        <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">뉴스 브리핑 요청</div>
-        <button onclick="sendPrompt('오늘 관심 카테고리 뉴스 전체 요약해줘')" style="width:100%;padding:9px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;margin-top:6px">맞춤 브리핑 요청 ↗</button>
+    </div>
+
+    <div style="margin:0 12px 4px;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.5px;padding:14px 4px 8px;text-transform:uppercase">관심 카테고리</div>
+    <div class="settings-section">
+      <div class="cat-grid" id="cat-settings">
+        <button class="tab-btn active" onclick="this.classList.toggle('active')">정치</button>
+        <button class="tab-btn active" onclick="this.classList.toggle('active')">경제</button>
+        <button class="tab-btn" onclick="this.classList.toggle('active')">사회</button>
+        <button class="tab-btn active" onclick="this.classList.toggle('active')">국제</button>
+        <button class="tab-btn" onclick="this.classList.toggle('active')">과학·IT</button>
+        <button class="tab-btn" onclick="this.classList.toggle('active')">스포츠</button>
+        <button class="tab-btn" onclick="this.classList.toggle('active')">연예</button>
       </div>
+    </div>
+
+    <div class="settings-section" style="margin-top:8px">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">API 키 변경</div>
+          <div class="settings-sub">Anthropic API 키 재설정</div>
+        </div>
+        <button class="settings-btn" onclick="resetApiKey()">변경</button>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">데이터 초기화</div>
+          <div class="settings-sub">즐겨찾기 전체 삭제</div>
+        </div>
+        <button class="settings-btn" style="color:#ff4d4d;border-color:rgba(255,77,77,0.3);background:var(--red-dim)" onclick="clearFavs()">초기화</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:24px;font-size:11px;color:var(--text3)">NEWSLY v2.0 · Powered by Claude AI</div>
+  </div>
+
+  <!-- CHAT PAGE -->
+  <div class="content" id="page-chat" style="display:none">
+    <div style="padding:14px 18px 10px;display:flex;align-items:center;gap:10px">
+      <button onclick="goPage('home')" style="background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;line-height:1">←</button>
+      <span style="font-size:16px;font-weight:700;color:var(--text)">AI 뉴스 상담</span>
+    </div>
+    <div id="chat-messages" style="padding:0 12px;display:flex;flex-direction:column;gap:10px;min-height:200px"></div>
+    <div style="padding:12px;display:flex;gap:8px;position:sticky;bottom:0;background:var(--bg);border-top:0.5px solid var(--border)">
+      <input id="chat-input" type="text" placeholder="뉴스에 대해 질문하세요..." style="flex:1;background:var(--surface2);border:0.5px solid var(--border2);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;padding:10px 14px" onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()" style="width:40px;height:40px;border-radius:12px;border:none;background:var(--accent);color:#000;font-size:18px;cursor:pointer">↑</button>
     </div>
   </div>
 
+  <!-- NAV BAR -->
   <div class="nav-bar">
-    <div class="nav-item active" onclick="goPage('home',this)" id="nav-home">
+    <div class="nav-item active" id="nav-home" onclick="goPage('home')">
       <span class="nav-icon">📰</span>
       <span class="nav-label">뉴스</span>
+      <div class="nav-dot"></div>
     </div>
-    <div class="nav-item" onclick="goPage('fav',this)" id="nav-fav">
+    <div class="nav-item" id="nav-fav" onclick="goPage('fav')">
       <span class="nav-icon">☆</span>
       <span class="nav-label">즐겨찾기</span>
+      <div class="nav-dot"></div>
     </div>
-    <div class="nav-item" onclick="goPage('settings',this)" id="nav-settings">
+    <div class="nav-item" id="nav-chat" onclick="goPage('chat')">
+      <span class="nav-icon">💬</span>
+      <span class="nav-label">AI 상담</span>
+      <div class="nav-dot"></div>
+    </div>
+    <div class="nav-item" id="nav-settings" onclick="goPage('settings')">
       <span class="nav-icon">⚙️</span>
       <span class="nav-label">설정</span>
+      <div class="nav-dot"></div>
     </div>
   </div>
 </div>
 
 <script>
-const today = new Date();
-const days=['일','월','화','수','목','금','토'];
-document.getElementById('today-date').textContent=`${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 (${days[today.getDay()]})`;
-
-let favorites = [];
+// ── STATE ──────────────────────────────────────────────────────────
+let apiKey = localStorage.getItem('newsly_api_key') || '';
+let favorites = JSON.parse(localStorage.getItem('newsly_favs') || '[]');
+let currentCity = localStorage.getItem('newsly_city') || '서울';
 let topCardData = null;
 let briefLoaded = false;
-let currentCity = '서울';
+let chatHistory = [];
 
-function goPage(name, el) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  el.classList.add('active');
-  if(name==='fav') renderFavs();
+// ── INIT ───────────────────────────────────────────────────────────
+const today = new Date();
+const days = ['일','월','화','수','목','금','토'];
+document.getElementById('header-date').textContent =
+  `${today.getFullYear()}. ${today.getMonth()+1}. ${today.getDate()} (${days[today.getDay()]})`;
+document.getElementById('city-input').value = currentCity;
+document.getElementById('cur-city-label').textContent = currentCity;
+
+if (!apiKey) {
+  document.getElementById('modal').classList.remove('hidden');
+} else {
+  document.getElementById('modal').classList.add('hidden');
+  loadWeather(currentCity);
+}
+updateFavUI();
+
+// ── API KEY ────────────────────────────────────────────────────────
+function saveApiKey() {
+  const v = document.getElementById('api-key-input').value.trim();
+  if (!v.startsWith('sk-ant-')) { showToast('올바른 API 키를 입력해주세요'); return; }
+  apiKey = v;
+  localStorage.setItem('newsly_api_key', v);
+  document.getElementById('modal').classList.add('hidden');
+  loadWeather(currentCity);
+  showToast('API 키가 저장되었습니다');
+}
+function resetApiKey() {
+  document.getElementById('api-key-input').value = '';
+  document.getElementById('modal').classList.remove('hidden');
 }
 
-function setTab(el, name) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  if(name!=='전체') sendPrompt(`오늘 ${name} 관련 뉴스 사건사고 요약해줘`);
+// ── CLAUDE API ─────────────────────────────────────────────────────
+async function callClaude(system, userMsg, useSearch = false) {
+  const body = {
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1200,
+    system,
+    messages: [{ role: 'user', content: userMsg }]
+  };
+  if (useSearch) body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' }
+    , body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error('API 오류: ' + res.status);
+  const data = await res.json();
+  return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
-function toggleCat(el) { el.classList.toggle('active'); }
-
-function toggleNotif(btn) {
-  btn.textContent = btn.textContent==='🔔' ? '🔕' : '🔔';
-}
-
+// ── WEATHER ────────────────────────────────────────────────────────
 async function loadWeather(city) {
+  document.getElementById('w-desc').textContent = '불러오는 중...';
+  document.getElementById('w-city').textContent = city;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:400,
-        tools:[{type:'web_search_20250305',name:'web_search'}],
-        system:'날씨 정보를 JSON으로만 반환. 형식: {"icon":"날씨 이모지","temp":숫자,"feels":숫자,"desc":"날씨설명","humidity":숫자,"wind":숫자,"high":숫자,"low":숫자} 마크다운 없이 JSON만.',
-        messages:[{role:'user',content:`${city} 현재 날씨 검색해서 JSON으로 줘`}]
-      })
-    });
-    const data = await res.json();
-    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const clean = text.replace(/```json|```/g,'').trim();
-    const w = JSON.parse(clean);
-    document.getElementById('w-icon').textContent = w.icon||'🌤';
-    document.getElementById('w-temp').textContent = Math.round(w.temp)+'°';
-    document.getElementById('w-city').textContent = city;
-    document.getElementById('w-desc').textContent = w.desc||'';
-    document.getElementById('w-hum').textContent = Math.round(w.humidity)+'%';
-    document.getElementById('w-wind').textContent = w.wind+'m/s';
-    document.getElementById('w-feel').textContent = Math.round(w.feels)+'°';
-    document.getElementById('w-hi-lo').textContent = `최고 ${Math.round(w.high)}° / 최저 ${Math.round(w.low)}°`;
+    const text = await callClaude(
+      `날씨 정보를 JSON으로만 반환. 형식: {"icon":"날씨이모지","temp":숫자,"feels":숫자,"desc":"날씨설명","humidity":숫자,"wind":숫자,"high":숫자,"low":숫자} JSON만, 마크다운 없이.`,
+      `${city} 현재 날씨 검색해서 JSON으로 줘`, true
+    );
+    const w = JSON.parse(text.replace(/```json|```/g,'').trim());
+    document.getElementById('w-icon').textContent = w.icon || '🌤';
+    document.getElementById('w-temp').textContent = Math.round(w.temp) + '°';
+    document.getElementById('w-desc').textContent = w.desc || '';
+    document.getElementById('w-hum').textContent = Math.round(w.humidity) + '%';
+    document.getElementById('w-wind').textContent = (w.wind||0) + 'm/s';
+    document.getElementById('w-feel').textContent = Math.round(w.feels) + '°';
+    document.getElementById('w-hilo').textContent = `최고 ${Math.round(w.high)}° / 최저 ${Math.round(w.low)}°`;
   } catch(e) {
     document.getElementById('w-desc').textContent = '날씨 정보를 불러올 수 없어요';
   }
@@ -276,152 +466,251 @@ async function loadWeather(city) {
 
 function changeCity() {
   const v = document.getElementById('city-input').value.trim();
-  if(v) { currentCity=v; loadWeather(v); }
+  if (!v) return;
+  currentCity = v;
+  localStorage.setItem('newsly_city', v);
+  document.getElementById('cur-city-label').textContent = v;
+  loadWeather(v);
+  showToast(`${v} 날씨로 변경됐어요`);
 }
 
-async function loadBriefing() {
-  if(briefLoaded) return;
-  const btn=document.getElementById('brief-btn');
-  document.getElementById('brief-label').innerHTML='<span class="ld"><span></span><span></span><span></span></span>';
-  document.getElementById('brief-icon').textContent='';
-  btn.disabled=true;
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1200,
-        tools:[{type:'web_search_20250305',name:'web_search'}],
-        system:`뉴스 브리핑 AI. 오늘: ${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일. JSON만 반환, 마크다운 없이.
-형식: {"breaking":"속보 20자","headline":{"title":"제목","summary":"2-3문장","category":"카테고리","source":"언론사","emoji":"이모지","bg":"#hex"},"items":[{"cat":"카테고리","title":"제목","preview":"한줄요약","source":"언론사","time":"시간전"},...],"briefing":"전체브리핑 2-3문장"}
-items 5개. 실제 오늘 뉴스 기반.`,
-        messages:[{role:'user',content:`오늘 ${today.getMonth()+1}월 ${today.getDate()}일 한국 주요 뉴스 검색해서 JSON 브리핑 줘`}]
-      })
-    });
-    const data = await res.json();
-    const text = data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const clean = text.replace(/```json|```/g,'').trim();
-    const p = JSON.parse(clean);
+function askOutfit() {
+  goPage('chat');
+  setTimeout(() => {
+    document.getElementById('chat-input').value = `오늘 ${currentCity} 날씨에 맞는 옷차림 추천해줘`;
+    sendChat();
+  }, 100);
+}
 
-    document.getElementById('breaking-text').textContent = p.breaking||'오늘의 속보';
+// ── BRIEFING ───────────────────────────────────────────────────────
+async function loadBriefing() {
+  if (briefLoaded) return;
+  const btn = document.getElementById('brief-btn');
+  document.getElementById('brief-label').innerHTML = '<span class="ld"><span></span><span></span><span></span></span>';
+  document.getElementById('brief-icon').textContent = '';
+  btn.disabled = true;
+  try {
+    const dateStr = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+    const text = await callClaude(
+      `뉴스 브리핑 AI. 오늘: ${dateStr}. JSON만 반환, 마크다운 없이.
+형식: {"breaking":"속보 20자","headline":{"title":"제목","summary":"2-3문장","category":"카테고리","source":"언론사","emoji":"이모지","bg":"연한색 hex"},"items":[{"cat":"카테고리","title":"제목","preview":"한줄요약","source":"언론사","time":"N시간 전"},...],"briefing":"전체브리핑 2-3문장"}
+items 5개, 실제 오늘 뉴스 기반.`,
+      `오늘 ${today.getMonth()+1}월 ${today.getDate()}일 한국 주요 뉴스 검색해서 JSON 브리핑 줘`, true
+    );
+    const p = JSON.parse(text.replace(/```json|```/g,'').trim());
+
+    document.getElementById('breaking-text').textContent = p.breaking || '오늘의 속보';
     document.getElementById('tc-cat').textContent = p.headline.category;
-    document.getElementById('tc-emoji').textContent = p.headline.emoji||'📰';
+    document.getElementById('tc-emoji').textContent = p.headline.emoji || '📰';
     document.getElementById('tc-title').textContent = p.headline.title;
     document.getElementById('tc-sum').textContent = p.headline.summary;
     document.getElementById('tc-src').textContent = p.headline.source;
-    document.getElementById('tc-time').textContent = '오늘';
-    if(p.headline.bg) document.getElementById('tc-thumb').style.background=p.headline.bg;
-    document.getElementById('brief-content').textContent = p.briefing;
+    if (p.headline.bg) document.getElementById('tc-thumb').style.background = p.headline.bg;
+    document.getElementById('brief-text').textContent = p.briefing;
     topCardData = p.headline;
 
     const list = document.getElementById('news-list');
-    list.innerHTML='';
-    (p.items||[]).forEach((item,i)=>{
-      const el=document.createElement('div');
-      el.className='ni';
-      const favId='item_'+i+'_'+Date.now();
-      el.innerHTML=`
+    list.innerHTML = '';
+    (p.items || []).forEach((item, i) => {
+      const id = 'item_' + i + '_' + Date.now();
+      const el = document.createElement('div');
+      el.className = 'ni';
+      const isFaved = favorites.some(f => f.title === item.title);
+      el.innerHTML = `
         <span class="ni-num">${i+1}</span>
         <div class="ni-body">
           <span class="ni-cat">${item.cat}</span>
-          <p class="ni-title">${item.title}</p>
+          <p class="ni-title" onclick="askAbout('${item.title.replace(/'/g,"\\'")}')">${item.title}</p>
           <p class="ni-prev">${item.preview}</p>
           <div class="ni-meta">
             <span>${item.source} · ${item.time}</span>
-            <button class="ni-fav" id="fav_${favId}" onclick="toggleFav(event,'${favId}','${item.title.replace(/'/g,"\\'")}','${item.cat}')">☆</button>
+            <button class="ni-fav-btn ${isFaved?'starred':''}" id="${id}" onclick="toggleFav(event,'${id}','${item.title.replace(/'/g,"\\'")}','${item.cat}')">${isFaved?'★':'☆'}</button>
           </div>
         </div>`;
-      el.querySelector('.ni-body .ni-title').onclick=()=>sendPrompt(`"${item.title}" 뉴스 자세히 알려줘`);
       list.appendChild(el);
     });
 
-    document.getElementById('brief-area').classList.add('open');
-    document.getElementById('brief-label').textContent='브리핑 완료 ✓';
-    document.getElementById('brief-icon').textContent='';
-    briefLoaded=true;
+    document.getElementById('brief-result').classList.add('open');
+    document.getElementById('brief-label').textContent = '오늘 브리핑 완료 ✓';
+    briefLoaded = true;
   } catch(e) {
-    document.getElementById('brief-label').textContent='AI 뉴스 브리핑 받기 ↗';
-    document.getElementById('brief-icon').textContent='✨';
-    btn.disabled=false;
+    document.getElementById('brief-label').textContent = 'AI 뉴스 브리핑 받기';
+    document.getElementById('brief-icon').textContent = '✨';
+    btn.disabled = false;
+    showToast('오류가 발생했어요. 다시 시도해보세요');
   }
 }
 
+function openTopCard() {
+  if (!topCardData) return;
+  askAbout(topCardData.title);
+}
+
+function askAbout(title) {
+  goPage('chat');
+  setTimeout(() => {
+    document.getElementById('chat-input').value = `"${title}" 뉴스 자세히 알려줘`;
+    sendChat();
+  }, 100);
+}
+
+function openChat(msg) {
+  goPage('chat');
+  setTimeout(() => {
+    document.getElementById('chat-input').value = msg;
+    sendChat();
+  }, 100);
+}
+
+// ── FAVORITES ──────────────────────────────────────────────────────
 function toggleFav(e, id, title, cat) {
   e.stopPropagation();
-  const btn = document.getElementById('fav_'+id);
-  const idx = favorites.findIndex(f=>f.id===id);
-  if(idx===-1) {
-    favorites.push({id, title, cat});
-    btn.textContent='★';
-    btn.style.color='#EF9F27';
+  const btn = document.getElementById(id);
+  const idx = favorites.findIndex(f => f.title === title);
+  if (idx === -1) {
+    favorites.push({ id, title, cat });
+    if (btn) { btn.textContent = '★'; btn.classList.add('starred'); }
+    showToast('즐겨찾기에 추가됐어요');
   } else {
-    favorites.splice(idx,1);
-    btn.textContent='☆';
-    btn.style.color='';
+    favorites.splice(idx, 1);
+    if (btn) { btn.textContent = '☆'; btn.classList.remove('starred'); }
+    showToast('즐겨찾기에서 삭제됐어요');
   }
-  updateFavCount();
+  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
+  updateFavUI();
 }
 
-function favTopCard(e) {
-  e.stopPropagation();
-  if(!topCardData) return;
+function favTopCard() {
+  if (!topCardData) { showToast('먼저 브리핑을 받아주세요'); return; }
   const btn = document.getElementById('tc-fav-btn');
-  const id='top_headline';
-  const idx = favorites.findIndex(f=>f.id===id);
-  if(idx===-1) {
-    favorites.push({id, title:topCardData.title, cat:topCardData.category});
-    btn.textContent='★'; btn.style.color='#EF9F27';
+  const idx = favorites.findIndex(f => f.title === topCardData.title);
+  if (idx === -1) {
+    favorites.push({ id: 'top', title: topCardData.title, cat: topCardData.category });
+    btn.textContent = '★'; btn.classList.add('starred');
+    showToast('즐겨찾기에 추가됐어요');
   } else {
-    favorites.splice(idx,1);
-    btn.textContent='☆'; btn.style.color='';
+    favorites.splice(idx, 1);
+    btn.textContent = '☆'; btn.classList.remove('starred');
+    showToast('즐겨찾기에서 삭제됐어요');
   }
-  updateFavCount();
+  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
+  updateFavUI();
 }
 
-function openTop() {
-  if(!topCardData) return;
-  sendPrompt(`"${topCardData.title}" 뉴스 자세히 알려줘`);
-}
-
-function updateFavCount() {
-  document.getElementById('fav-count').textContent=favorites.length+'개';
-  const navFav=document.querySelector('#nav-fav .nav-icon');
-  navFav.textContent=favorites.length>0?'★':'☆';
+function updateFavUI() {
+  document.getElementById('fav-count-badge').textContent = favorites.length + '개';
+  document.querySelector('#nav-fav .nav-icon').textContent = favorites.length > 0 ? '★' : '☆';
 }
 
 function renderFavs() {
-  const container=document.getElementById('fav-list');
-  if(favorites.length===0){
-    container.innerHTML='<div class="fav-empty">아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>';
+  const container = document.getElementById('fav-list');
+  if (favorites.length === 0) {
+    container.innerHTML = '<div class="fav-empty"><span class="fav-empty-icon">☆</span>아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>';
     return;
   }
-  container.innerHTML='';
-  favorites.forEach(f=>{
-    const el=document.createElement('div');
-    el.className='fav-item';
-    el.innerHTML=`
-      <div class="fav-body">
-        <div class="fav-title">${f.title}</div>
-        <div class="fav-cat">${f.cat}</div>
+  container.innerHTML = '';
+  favorites.forEach((f, i) => {
+    const el = document.createElement('div');
+    el.className = 'fav-item';
+    el.innerHTML = `
+      <div class="fav-item-body" onclick="askAbout('${f.title.replace(/'/g,"\\'")}')">
+        <div class="fav-item-title">${f.title}</div>
+        <div class="fav-item-cat">${f.cat}</div>
       </div>
-      <button class="fav-del" onclick="removeFav('${f.id}')">✕</button>`;
-    el.querySelector('.fav-body').onclick=()=>sendPrompt(`"${f.title}" 뉴스 자세히 알려줘`);
+      <button class="fav-del" onclick="removeFav(${i})">✕</button>`;
     container.appendChild(el);
   });
 }
 
-function removeFav(id) {
-  favorites=favorites.filter(f=>f.id!==id);
-  updateFavCount();
+function removeFav(idx) {
+  favorites.splice(idx, 1);
+  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
+  updateFavUI();
   renderFavs();
-  const btn=document.getElementById('fav_'+id);
-  if(btn){btn.textContent='☆';btn.style.color='';}
-  if(id==='top_headline'){
-    document.getElementById('tc-fav-btn').textContent='☆';
-    document.getElementById('tc-fav-btn').style.color='';
-  }
+  showToast('삭제됐어요');
 }
 
-loadWeather(currentCity);
+function clearFavs() {
+  if (!confirm('즐겨찾기를 모두 삭제할까요?')) return;
+  favorites = [];
+  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
+  updateFavUI();
+  renderFavs();
+  showToast('즐겨찾기가 초기화됐어요');
+}
+
+// ── CHAT ───────────────────────────────────────────────────────────
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const container = document.getElementById('chat-messages');
+  const userEl = document.createElement('div');
+  userEl.style.cssText = 'background:var(--accent-dim);border:0.5px solid rgba(232,255,71,0.2);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13px;color:var(--text);line-height:1.6;max-width:85%;align-self:flex-end;margin-left:auto';
+  userEl.textContent = msg;
+  container.appendChild(userEl);
+
+  const aiEl = document.createElement('div');
+  aiEl.style.cssText = 'background:var(--surface);border:0.5px solid var(--border2);border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:13px;color:var(--text2);line-height:1.6;max-width:90%';
+  aiEl.innerHTML = '<span class="ld"><span></span><span></span><span></span></span>';
+  container.appendChild(aiEl);
+  container.scrollTop = container.scrollHeight;
+
+  chatHistory.push({ role: 'user', content: msg });
+
+  try {
+    const body = {
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 800,
+      system: '당신은 뉴스 전문 AI 어시스턴트입니다. 한국어로 친절하고 간결하게 답변하세요.',
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      messages: chatHistory
+    };
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    const reply = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    aiEl.textContent = reply;
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    aiEl.textContent = '오류가 발생했어요. 다시 시도해보세요.';
+    chatHistory.pop();
+  }
+  container.scrollTop = container.scrollHeight;
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────
+function goPage(name) {
+  ['home','fav','chat','settings'].forEach(p => {
+    document.getElementById('page-'+p).style.display = 'none';
+    document.getElementById('nav-'+p).classList.remove('active');
+  });
+  document.getElementById('page-'+name).style.display = 'block';
+  document.getElementById('nav-'+name).classList.add('active');
+  if (name === 'fav') renderFavs();
+}
+
+function setTab(el, cat) {
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── UTILS ──────────────────────────────────────────────────────────
+function toggleNotif(btn) {
+  btn.textContent = btn.textContent === '🔔' ? '🔕' : '🔔';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
 </script>
+</body>
+</html>
