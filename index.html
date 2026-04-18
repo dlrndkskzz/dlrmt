@@ -2,231 +2,192 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>오늘의 뉴스</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NEWSLY — 오늘의 뉴스</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --surface2: #1e1e1e;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0f0f0;
-    --text2: #888;
-    --text3: #555;
-    --accent: #e8ff47;
-    --accent-dim: rgba(232,255,71,0.12);
-    --red: #ff4d4d;
-    --red-dim: rgba(255,77,77,0.12);
-    --blue: #4d9fff;
-    --blue-dim: rgba(77,159,255,0.1);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; overflow: hidden; }
+:root {
+  --bg: #f4f3ef;
+  --surface: #ffffff;
+  --surface2: #eeeee8;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #111;
+  --text2: #555;
+  --text3: #999;
+  --accent: #1a1a1a;
+  --red: #d93025;
+  --red-bg: #fff2f1;
+  --red-border: rgba(217,48,37,0.2);
+  --green: #1e7e40;
+  --green-bg: #f0faf4;
+  --blue: #1557b0;
+  --blue-bg: #edf3ff;
+  --tag: #e8e8e2;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100svh;max-width:480px;margin:0 auto;background:var(--bg);position:relative}
 
-  /* APP SHELL */
-  #app { display: flex; flex-direction: column; height: 100vh; max-width: 480px; margin: 0 auto; position: relative; background: var(--bg); }
+.header{padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{font-size:21px;font-weight:900;letter-spacing:-0.5px;color:var(--text)}
+.logo span{color:var(--red)}
+.hdate{font-size:11px;color:var(--text3);margin-top:2px}
+.hbtns{display:flex;gap:6px}
+.hbtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border2);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px}
 
-  /* HEADER */
-  .header { padding: 16px 18px 12px; display: flex; align-items: flex-end; justify-content: space-between; flex-shrink: 0; border-bottom: 0.5px solid var(--border); }
-  .header-brand { display: flex; flex-direction: column; }
-  .header-brand .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); line-height: 1; }
-  .header-brand .date { font-size: 11px; color: var(--text3); margin-top: 3px; letter-spacing: 0.5px; }
-  .header-actions { display: flex; gap: 8px; }
-  .hbtn { width: 36px; height: 36px; border-radius: 10px; border: 0.5px solid var(--border2); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.2s; }
-  .hbtn:hover { background: var(--surface2); }
+.weather-card{margin:10px 12px 0;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.w-icon{font-size:36px;line-height:1}
+.w-main{flex:1}
+.w-temp{font-size:24px;font-weight:700;line-height:1}
+.w-city{font-size:12px;color:var(--text2);margin-left:6px}
+.w-desc{font-size:12px;color:var(--text2);margin-top:3px}
+.w-pills{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.w-pill{background:var(--tag);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--text2)}
+.w-right{text-align:right;flex-shrink:0}
+.w-hilo{font-size:11px;color:var(--text3)}
+.outfit-btn{font-size:11px;color:var(--blue);background:var(--blue-bg);border:none;border-radius:20px;padding:4px 10px;cursor:pointer;margin-top:6px;font-family:inherit;display:block;width:100%}
 
-  /* WEATHER */
-  .weather-strip { margin: 12px; border-radius: 14px; background: var(--surface); border: 0.5px solid var(--border2); padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-  .w-icon { font-size: 32px; line-height: 1; }
-  .w-main { flex: 1; }
-  .w-row1 { display: flex; align-items: baseline; gap: 8px; }
-  .w-temp { font-size: 22px; font-weight: 700; color: var(--text); }
-  .w-city { font-size: 12px; color: var(--text2); }
-  .w-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
-  .w-extras { display: flex; gap: 12px; margin-top: 6px; }
-  .w-ext { font-size: 10px; color: var(--text3); }
-  .w-ext b { color: var(--text2); font-weight: 500; }
-  .w-right { text-align: right; }
-  .w-hilo { font-size: 11px; color: var(--text3); }
-  .w-outfit-btn { font-size: 11px; color: var(--accent); cursor: pointer; margin-top: 6px; display: block; border: none; background: none; font-family: inherit; }
+.tabs{display:flex;gap:6px;padding:10px 12px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{padding:5px 13px;border-radius:20px;font-size:12px;font-family:inherit;white-space:nowrap;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-weight:400}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
 
-  /* TABS */
-  .tabs { display: flex; gap: 6px; padding: 10px 12px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab-btn { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: inherit; white-space: nowrap; cursor: pointer; border: 0.5px solid var(--border2); background: transparent; color: var(--text2); transition: all 0.2s; }
-  .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+.content{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:12px}
+.content::-webkit-scrollbar{display:none}
 
-  /* SCROLLABLE CONTENT */
-  .content { flex: 1; overflow-y: auto; scrollbar-width: none; padding-bottom: 12px; }
-  .content::-webkit-scrollbar { display: none; }
+.breaking{margin:0 12px 10px;background:var(--red-bg);border:1px solid var(--red-border);border-radius:12px;padding:9px 12px;display:flex;align-items:flex-start;gap:8px}
+.bb{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.bt{font-size:12px;color:#7a1a14;line-height:1.5}
 
-  /* BREAKING */
-  .breaking { margin: 0 12px 10px; background: var(--red-dim); border: 0.5px solid rgba(255,77,77,0.3); border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
-  .breaking-badge { background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; letter-spacing: 0.5px; }
-  .breaking-text { font-size: 12px; color: #ffaaaa; line-height: 1.4; }
+.load-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 12px 10px;padding:13px;background:var(--surface);border:1px solid var(--border2);border-radius:14px;font-size:13px;font-family:inherit;color:var(--text2);cursor:pointer;width:calc(100% - 24px);font-weight:500}
+.load-btn:active{background:var(--surface2)}
+.load-btn:disabled{opacity:.5;cursor:not-allowed}
+.load-btn.done{color:var(--green);border-color:rgba(30,126,64,.25);background:var(--green-bg)}
 
-  /* BRIEF BTN */
-  .brief-btn { margin: 0 12px 4px; padding: 13px; border-radius: 14px; border: 0.5px solid rgba(232,255,71,0.3); background: var(--accent-dim); font-size: 13px; font-family: inherit; font-weight: 500; color: var(--accent); cursor: pointer; width: calc(100% - 24px); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
-  .brief-btn:hover { background: rgba(232,255,71,0.18); }
-  .brief-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.sec{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.2px;padding:14px 16px 8px;text-transform:uppercase}
 
-  /* BRIEFING RESULT */
-  .brief-result { display: none; margin: 4px 12px 0; background: var(--surface); border: 0.5px solid var(--border2); border-radius: 14px; padding: 14px; }
-  .brief-result.open { display: block; }
-  .brief-result p { font-size: 13px; color: var(--text2); line-height: 1.7; }
-  .brief-more { font-size: 12px; color: var(--accent); cursor: pointer; background: none; border: none; font-family: inherit; margin-top: 10px; display: block; }
+.top-card{margin:0 12px 4px;border-radius:16px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;background:var(--surface)}
+.tc-thumb{height:156px;background:#e8f0ff;display:flex;align-items:center;justify-content:center;position:relative}
+.tc-emoji{font-size:56px}
+.tc-cat{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.9);color:var(--text);font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;border:1px solid var(--border)}
+.tc-fav-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.9);border:1px solid var(--border2);color:var(--text2);font-size:15px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.tc-fav-btn.starred{color:var(--red)}
+.tc-body{padding:14px}
+.tc-title{font-size:15px;font-weight:700;line-height:1.45;margin-bottom:6px}
+.tc-sum{font-size:12px;color:var(--text2);line-height:1.65}
+.tc-meta{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--text3)}
+.tdot{width:3px;height:3px;border-radius:50%;background:var(--text3)}
+.spill{display:inline-block;font-size:10px;color:var(--text3);background:var(--tag);padding:1px 7px;border-radius:20px;margin-right:4px}
 
-  /* SEC TITLE */
-  .sec { font-size: 11px; font-weight: 700; color: var(--text3); letter-spacing: 1.5px; padding: 14px 18px 8px; text-transform: uppercase; }
+.nlist{padding:0 12px;display:flex;flex-direction:column;gap:4px}
+.ni{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.ni:active{background:var(--surface2)}
+.ni-num{font-size:16px;font-weight:900;color:#ddd;min-width:20px;line-height:1.2}
+.ni-body{flex:1;min-width:0}
+.ni-cat{font-size:10px;color:var(--blue);background:var(--blue-bg);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:5px;font-weight:700}
+.ni-title{font-size:13px;font-weight:500;line-height:1.45;margin-bottom:3px}
+.ni-prev{font-size:11px;color:var(--text3);line-height:1.45}
+.ni-meta{font-size:11px;color:var(--text3);margin-top:6px;display:flex;align-items:center;justify-content:space-between}
+.fav-star{background:none;border:none;font-size:16px;cursor:pointer;color:var(--text3);padding:0}
+.fav-star.on{color:var(--red)}
 
-  /* TOP CARD */
-  .top-card { margin: 0 12px 4px; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--border2); cursor: pointer; background: var(--surface); }
-  .tc-thumb { height: 160px; background: #1a2a1a; display: flex; align-items: center; justify-content: center; position: relative; }
-  .tc-thumb-emoji { font-size: 60px; }
-  .tc-category { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: var(--text2); font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 0.5px solid var(--border2); }
-  .tc-fav { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); border: 0.5px solid var(--border2); color: var(--text2); font-size: 16px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  .tc-fav.starred { color: var(--accent); border-color: var(--accent); }
-  .tc-body { padding: 14px; }
-  .tc-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
-  .tc-sum { font-size: 12px; color: var(--text2); line-height: 1.6; }
-  .tc-meta { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; color: var(--text3); }
-  .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); }
+.fav-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.fav-title{font-size:18px;font-weight:700}
+.fav-badge{font-size:12px;color:var(--text3);background:var(--tag);padding:3px 10px;border-radius:20px}
+.fav-empty{text-align:center;padding:48px 24px;color:var(--text3);font-size:13px;line-height:1.9}
+.fav-empty .ei{font-size:40px;display:block;margin-bottom:12px}
+.fav-item{margin:0 12px 4px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.fav-item:active{background:var(--surface2)}
+.fav-body{flex:1;min-width:0}
+.fav-item-title{font-size:13px;font-weight:500;line-height:1.4}
+.fav-item-cat{font-size:11px;color:var(--text3);margin-top:4px}
+.fav-del{background:none;border:none;font-size:18px;color:var(--text3);cursor:pointer}
 
-  /* NEWS LIST */
-  .nlist { padding: 0 12px; display: flex; flex-direction: column; gap: 4px; }
-  .ni { background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 13px; cursor: pointer; display: flex; gap: 10px; align-items: flex-start; transition: background 0.15s; }
-  .ni:active { background: var(--surface2); }
-  .ni-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--text3); min-width: 20px; line-height: 1.1; }
-  .ni-body { flex: 1; min-width: 0; }
-  .ni-cat { font-size: 10px; color: var(--accent); background: var(--accent-dim); padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 5px; font-weight: 700; letter-spacing: 0.5px; }
-  .ni-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.45; margin-bottom: 3px; }
-  .ni-prev { font-size: 11px; color: var(--text3); line-height: 1.45; }
-  .ni-meta { font-size: 11px; color: var(--text3); margin-top: 6px; display: flex; align-items: center; justify-content: space-between; }
-  .ni-fav-btn { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text3); transition: color 0.2s; }
-  .ni-fav-btn.starred { color: var(--accent); }
+.chat-page{display:none;flex-direction:column;flex:1;overflow:hidden}
+.chat-page.on{display:flex}
+.chat-hd{padding:12px 14px;display:flex;align-items:center;gap:10px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.chat-back{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text2);line-height:1;padding:0}
+.chat-ht{font-size:15px;font-weight:700}
+.chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none}
+.chat-msgs::-webkit-scrollbar{display:none}
+.chat-bar{display:flex;gap:8px;padding:10px 12px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0}
+.chat-inp{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;padding:10px 14px}
+.chat-send{width:40px;height:40px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+.msg-u{background:var(--accent);color:#fff;border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:82%;align-self:flex-end;white-space:pre-wrap}
+.msg-a{background:var(--surface);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:10px 14px;font-size:13px;color:var(--text2);line-height:1.7;max-width:90%;align-self:flex-start;white-space:pre-wrap}
 
-  /* FAVORITES PAGE */
-  #page-fav { display: none; }
-  .fav-header { padding: 14px 18px 10px; display: flex; align-items: center; justify-content: space-between; }
-  .fav-header span { font-size: 18px; font-weight: 700; color: var(--text); }
-  .fav-count-badge { font-size: 12px; color: var(--text3); background: var(--surface2); padding: 3px 10px; border-radius: 20px; }
-  .fav-empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; line-height: 1.8; }
-  .fav-empty .fav-empty-icon { font-size: 36px; display: block; margin-bottom: 12px; }
-  .fav-item { margin: 0 12px 4px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; padding: 13px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; transition: background 0.15s; }
-  .fav-item:active { background: var(--surface2); }
-  .fav-item-body { flex: 1; min-width: 0; }
-  .fav-item-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
-  .fav-item-cat { font-size: 11px; color: var(--text3); margin-top: 4px; }
-  .fav-del { background: none; border: none; font-size: 18px; color: var(--text3); cursor: pointer; padding: 0; line-height: 1; }
+.settings-hd{padding:14px 16px 10px}
+.settings-ht{font-size:18px;font-weight:700}
+.sg{margin:0 12px 8px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.sr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.sr:last-child{border-bottom:none}
+.sl{font-size:13px;font-weight:500}
+.ss{font-size:11px;color:var(--text3);margin-top:3px}
+.sinp{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:inherit;padding:6px 10px;width:110px}
+.sbtn{background:var(--tag);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12px;font-family:inherit;padding:6px 12px;cursor:pointer}
+.sbtn.danger{color:var(--red);background:var(--red-bg);border-color:var(--red-border)}
+.tog{width:40px;height:22px;background:var(--tag);border-radius:11px;position:relative;cursor:pointer;border:1px solid var(--border2);transition:background .2s;flex-shrink:0}
+.tog.on{background:var(--green);border-color:var(--green)}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog.on::after{left:20px}
+.sfooter{text-align:center;padding:24px;font-size:11px;color:var(--text3)}
 
-  /* SETTINGS PAGE */
-  #page-settings { display: none; }
-  .settings-header { padding: 14px 18px 10px; }
-  .settings-header span { font-size: 18px; font-weight: 700; color: var(--text); }
-  .settings-section { margin: 0 12px 8px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 14px; overflow: hidden; }
-  .settings-row { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid var(--border); }
-  .settings-row:last-child { border-bottom: none; }
-  .settings-label { font-size: 13px; color: var(--text); }
-  .settings-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
-  .settings-input { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 8px; color: var(--text); font-size: 13px; font-family: inherit; padding: 6px 10px; width: 130px; }
-  .settings-btn { background: var(--accent-dim); border: 0.5px solid rgba(232,255,71,0.3); border-radius: 8px; color: var(--accent); font-size: 12px; font-family: inherit; font-weight: 500; padding: 6px 12px; cursor: pointer; }
-  .cat-grid { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 16px; }
-  .toggle { width: 40px; height: 22px; background: var(--surface2); border-radius: 11px; position: relative; cursor: pointer; border: 0.5px solid var(--border2); transition: background 0.2s; }
-  .toggle.on { background: var(--accent); }
-  .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--text3); transition: all 0.2s; }
-  .toggle.on::after { left: 20px; background: #000; }
+.nav-bar{display:flex;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;padding:6px 0 max(6px,env(safe-area-inset-bottom))}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 0}
+.nav-icon{font-size:20px;line-height:1}
+.nav-lbl{font-size:10px;color:var(--text3)}
+.nav-item.active .nav-lbl{color:var(--text);font-weight:700}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--red);margin:1px auto 0;display:none}
+.nav-item.active .nav-dot{display:block}
 
-  /* NAV BAR */
-  .nav-bar { display: flex; border-top: 0.5px solid var(--border); background: var(--surface); flex-shrink: 0; padding: 6px 0 max(6px, env(safe-area-inset-bottom)); }
-  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; }
-  .nav-icon { font-size: 20px; line-height: 1; }
-  .nav-label { font-size: 10px; color: var(--text3); transition: color 0.2s; }
-  .nav-item.active .nav-label { color: var(--accent); font-weight: 700; }
-  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); display: none; margin: 0 auto; }
-  .nav-item.active .nav-dot { display: block; }
+.ld{display:inline-flex;gap:4px;align-items:center}
+.ld span{width:5px;height:5px;border-radius:50%;background:var(--text3);animation:bo 1.1s infinite}
+.ld span:nth-child(2){animation-delay:.18s}
+.ld span:nth-child(3){animation-delay:.36s}
+@keyframes bo{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 
-  /* LOADING DOTS */
-  .ld { display: inline-flex; gap: 4px; align-items: center; }
-  .ld span { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: bo 1.2s infinite; }
-  .ld span:nth-child(2) { animation-delay: .2s; }
-  .ld span:nth-child(3) { animation-delay: .4s; }
-  @keyframes bo { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+.toast{position:absolute;bottom:76px;left:50%;transform:translateX(-50%) translateY(10px);background:#111;color:#fff;border-radius:20px;padding:8px 18px;font-size:12px;opacity:0;pointer-events:none;transition:all .25s;white-space:nowrap;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* TOAST */
-  .toast { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 20px; padding: 8px 16px; font-size: 12px; color: var(--text2); opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; z-index: 100; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* API KEY MODAL */
-  .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-  .modal-overlay.hidden { display: none; }
-  .modal { background: var(--surface); border: 0.5px solid var(--border2); border-radius: 20px; padding: 24px; width: 100%; max-width: 360px; }
-  .modal h2 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-  .modal p { font-size: 12px; color: var(--text3); line-height: 1.7; margin-bottom: 16px; }
-  .modal input { width: 100%; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 10px; color: var(--text); font-size: 13px; font-family: inherit; padding: 10px 12px; margin-bottom: 10px; }
-  .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent); color: #000; font-size: 14px; font-family: inherit; font-weight: 700; cursor: pointer; }
-  .modal-note { font-size: 11px; color: var(--text3); text-align: center; margin-top: 10px; }
-  .modal-note a { color: var(--accent); }
-
-  /* PAGE TRANSITIONS */
-  #page-home, #page-fav, #page-settings { animation: fadeIn 0.2s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.chip{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;margin:4px 4px 0 0;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--text2)}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 </style>
 </head>
 <body>
 <div id="app">
-
-  <!-- API KEY MODAL -->
-  <div class="modal-overlay" id="modal">
-    <div class="modal">
-      <h2>🗝️ API 키 설정</h2>
-      <p>앱을 사용하려면 Anthropic API 키가 필요해요.<br>키는 기기에만 저장되며 외부로 전송되지 않아요.</p>
-      <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off">
-      <button class="modal-btn" onclick="saveApiKey()">저장하고 시작하기</button>
-      <p class="modal-note">키 발급: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
-    </div>
-  </div>
-
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER -->
   <div class="header">
-    <div class="header-brand">
-      <div class="logo">NEWSLY</div>
-      <div class="date" id="header-date"></div>
+    <div>
+      <div class="logo">NEWS<span>·</span>LY</div>
+      <div class="hdate" id="hdate"></div>
     </div>
-    <div class="header-actions">
-      <button class="hbtn" id="notif-btn" onclick="toggleNotif(this)" title="알림">🔔</button>
-      <button class="hbtn" onclick="resetApiKey()" title="API 키 변경">🔑</button>
+    <div class="hbtns">
+      <button class="hbtn" id="nb" onclick="this.textContent=this.textContent==='🔔'?'🔕':'🔔'">🔔</button>
+      <button class="hbtn" onclick="goPage('settings')">⚙️</button>
     </div>
   </div>
 
-  <!-- WEATHER -->
-  <div class="weather-strip" id="weather-strip">
-    <div class="w-icon" id="w-icon">⏳</div>
+  <div class="weather-card">
+    <div class="w-icon" id="wi">🌤</div>
     <div class="w-main">
-      <div class="w-row1">
-        <span class="w-temp" id="w-temp">--°</span>
-        <span class="w-city" id="w-city">서울</span>
-      </div>
-      <div class="w-desc" id="w-desc">날씨 불러오는 중...</div>
-      <div class="w-extras">
-        <div class="w-ext">습도 <b id="w-hum">--%</b></div>
-        <div class="w-ext">바람 <b id="w-wind">--m/s</b></div>
-        <div class="w-ext">체감 <b id="w-feel">--°</b></div>
+      <div><span class="w-temp" id="wt">--°</span><span class="w-city" id="wc">서울</span></div>
+      <div class="w-desc" id="wd">불러오는 중...</div>
+      <div class="w-pills">
+        <span class="w-pill">💧<span id="wh">--</span>%</span>
+        <span class="w-pill">💨<span id="ww">--</span>m/s</span>
+        <span class="w-pill">체감 <span id="wf">--</span>°</span>
       </div>
     </div>
     <div class="w-right">
-      <div class="w-hilo" id="w-hilo">최고 --° / 최저 --°</div>
-      <button class="w-outfit-btn" onclick="askOutfit()">옷차림 추천 →</button>
+      <div class="w-hilo" id="whl">--° · --°</div>
+      <button class="outfit-btn" onclick="goChat('오늘 날씨에 맞는 옷차림 추천해줘')">👗 옷차림 추천</button>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="tabs" id="cat-tabs">
+  <div class="tabs">
     <button class="tab-btn active" onclick="setTab(this,'전체')">전체</button>
     <button class="tab-btn" onclick="setTab(this,'정치')">정치</button>
     <button class="tab-btn" onclick="setTab(this,'경제')">경제</button>
@@ -237,480 +198,357 @@
     <button class="tab-btn" onclick="setTab(this,'연예')">연예</button>
   </div>
 
-  <!-- HOME PAGE -->
+  <!-- HOME -->
   <div class="content" id="page-home">
-    <div class="breaking" id="breaking-bar">
-      <span class="breaking-badge">속보</span>
-      <span class="breaking-text" id="breaking-text">AI 브리핑을 눌러 오늘 뉴스를 확인하세요</span>
-    </div>
-
-    <button class="brief-btn" id="brief-btn" onclick="loadBriefing()">
-      <span id="brief-icon">✨</span>
-      <span id="brief-label">AI 뉴스 브리핑 받기</span>
+    <div class="breaking"><span class="bb">최신</span><span class="bt" id="brk">아래 버튼을 눌러 뉴스를 불러오세요</span></div>
+    <button class="load-btn" id="lbtn" onclick="loadNews()">
+      <span id="lic">📡</span><span id="llbl">실시간 뉴스 불러오기</span>
     </button>
-    <div class="brief-result" id="brief-result">
-      <p id="brief-text"></p>
-      <button class="brief-more" onclick="openChat('오늘 뉴스 전체 브리핑 더 자세히 해줘')">더 자세히 알아보기 →</button>
-    </div>
-
     <div class="sec">오늘의 헤드라인</div>
     <div class="top-card">
-      <div class="tc-thumb" id="tc-thumb">
-        <span class="tc-category" id="tc-cat">--</span>
-        <button class="tc-fav" id="tc-fav-btn" onclick="favTopCard()">☆</button>
-        <span class="tc-thumb-emoji" id="tc-emoji">📰</span>
+      <div class="tc-thumb" id="tcthumb">
+        <span class="tc-cat" id="tccat">--</span>
+        <button class="tc-fav-btn" id="tcfav" onclick="favTop(event)">☆</button>
+        <span class="tc-emoji" id="tcemoji">📰</span>
       </div>
-      <div class="tc-body" onclick="openTopCard()">
-        <p class="tc-title" id="tc-title">AI 브리핑을 눌러 헤드라인을 확인하세요</p>
-        <p class="tc-sum" id="tc-sum">매일 아침 최신 뉴스를 AI가 요약해 드립니다.</p>
+      <div class="tc-body" id="tcbody">
+        <p class="tc-title" id="tctitle">뉴스 불러오기를 눌러주세요</p>
+        <p class="tc-sum" id="tcsum">실시간 최신 뉴스를 가져옵니다.</p>
         <div class="tc-meta">
-          <span id="tc-src">뉴스</span>
-          <div class="dot"></div>
-          <span id="tc-time">오늘</span>
+          <span class="spill" id="tcsrc">뉴스</span>
+          <div class="tdot"></div>
+          <span id="tctime">오늘</span>
         </div>
       </div>
     </div>
-
     <div class="sec">주요 뉴스</div>
-    <div class="nlist" id="news-list">
-      <div class="ni" style="justify-content:center;padding:24px">
-        <span style="font-size:12px;color:var(--text3)">AI 브리핑을 받으면 주요 뉴스가 표시됩니다</span>
+    <div class="nlist" id="nlist">
+      <div class="ni" style="justify-content:center;padding:24px;border-style:dashed">
+        <span style="font-size:12px;color:var(--text3)">뉴스 불러오기를 누르면 표시됩니다</span>
       </div>
     </div>
   </div>
 
-  <!-- FAV PAGE -->
+  <!-- FAV -->
   <div class="content" id="page-fav" style="display:none">
-    <div class="fav-header">
-      <span>즐겨찾기</span>
-      <span class="fav-count-badge" id="fav-count-badge">0개</span>
-    </div>
-    <div id="fav-list"></div>
+    <div class="fav-header"><span class="fav-title">즐겨찾기</span><span class="fav-badge" id="fbadge">0개</span></div>
+    <div id="flist"></div>
   </div>
 
-  <!-- SETTINGS PAGE -->
+  <!-- CHAT -->
+  <div class="chat-page" id="page-chat">
+    <div class="chat-hd">
+      <button class="chat-back" onclick="goPage('home')">←</button>
+      <span class="chat-ht">💬 AI 뉴스 상담</span>
+    </div>
+    <div class="chat-msgs" id="cmsgs"></div>
+    <div class="chat-bar">
+      <input class="chat-inp" id="cinp" placeholder="날씨, 옷차림, 뉴스 키워드 질문..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">↑</button>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
   <div class="content" id="page-settings" style="display:none">
-    <div class="settings-header"><span>설정</span></div>
-
-    <div class="settings-section">
-      <div class="settings-row">
-        <div>
-          <div class="settings-label">날씨 도시</div>
-          <div class="settings-sub">현재: <span id="cur-city-label">서울</span></div>
-        </div>
+    <div class="settings-hd"><div class="settings-ht">설정</div></div>
+    <div class="sg">
+      <div class="sr">
+        <div><div class="sl">날씨 도시</div><div class="ss">현재: <span id="curcity">서울</span></div></div>
         <div style="display:flex;gap:6px;align-items:center">
-          <input class="settings-input" id="city-input" placeholder="도시명 입력" value="서울">
-          <button class="settings-btn" onclick="changeCity()">변경</button>
+          <input class="sinp" id="cityinp" placeholder="도시명" value="서울">
+          <button class="sbtn" onclick="changeCity()">변경</button>
         </div>
       </div>
-      <div class="settings-row">
-        <div>
-          <div class="settings-label">알림</div>
-          <div class="settings-sub">매일 아침 브리핑 알림</div>
-        </div>
-        <div class="toggle" id="notif-toggle" onclick="this.classList.toggle('on')"></div>
+      <div class="sr">
+        <div><div class="sl">알림</div><div class="ss">아침 브리핑 알림</div></div>
+        <div class="tog" onclick="this.classList.toggle('on')"></div>
       </div>
     </div>
-
-    <div style="margin:0 12px 4px;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.5px;padding:14px 4px 8px;text-transform:uppercase">관심 카테고리</div>
-    <div class="settings-section">
-      <div class="cat-grid" id="cat-settings">
-        <button class="tab-btn active" onclick="this.classList.toggle('active')">정치</button>
-        <button class="tab-btn active" onclick="this.classList.toggle('active')">경제</button>
-        <button class="tab-btn" onclick="this.classList.toggle('active')">사회</button>
-        <button class="tab-btn active" onclick="this.classList.toggle('active')">국제</button>
-        <button class="tab-btn" onclick="this.classList.toggle('active')">과학·IT</button>
-        <button class="tab-btn" onclick="this.classList.toggle('active')">스포츠</button>
-        <button class="tab-btn" onclick="this.classList.toggle('active')">연예</button>
+    <div style="margin:0 12px 4px;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.2px;padding:14px 4px 8px;text-transform:uppercase">관심 카테고리</div>
+    <div class="sg">
+      <div style="padding:13px 16px;display:flex;flex-wrap:wrap;gap:0">
+        <span class="chip on" onclick="this.classList.toggle('on')">정치</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">경제</span>
+        <span class="chip" onclick="this.classList.toggle('on')">사회</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">국제</span>
+        <span class="chip" onclick="this.classList.toggle('on')">과학·IT</span>
+        <span class="chip" onclick="this.classList.toggle('on')">스포츠</span>
+        <span class="chip" onclick="this.classList.toggle('on')">연예</span>
       </div>
     </div>
-
-    <div class="settings-section" style="margin-top:8px">
-      <div class="settings-row">
-        <div>
-          <div class="settings-label">API 키 변경</div>
-          <div class="settings-sub">Anthropic API 키 재설정</div>
-        </div>
-        <button class="settings-btn" onclick="resetApiKey()">변경</button>
-      </div>
-      <div class="settings-row">
-        <div>
-          <div class="settings-label">데이터 초기화</div>
-          <div class="settings-sub">즐겨찾기 전체 삭제</div>
-        </div>
-        <button class="settings-btn" style="color:#ff4d4d;border-color:rgba(255,77,77,0.3);background:var(--red-dim)" onclick="clearFavs()">초기화</button>
+    <div style="margin:0 12px 4px;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.2px;padding:14px 4px 8px;text-transform:uppercase">데이터</div>
+    <div class="sg">
+      <div class="sr">
+        <div><div class="sl">즐겨찾기 초기화</div><div class="ss">저장된 뉴스 전체 삭제</div></div>
+        <button class="sbtn danger" onclick="clearFavs()">초기화</button>
       </div>
     </div>
-
-    <div style="text-align:center;padding:24px;font-size:11px;color:var(--text3)">NEWSLY v2.0 · Powered by Claude AI</div>
+    <div class="sfooter">NEWSLY v3.0 · 날씨: Open-Meteo · 뉴스: Google News RSS</div>
   </div>
 
-  <!-- CHAT PAGE -->
-  <div class="content" id="page-chat" style="display:none">
-    <div style="padding:14px 18px 10px;display:flex;align-items:center;gap:10px">
-      <button onclick="goPage('home')" style="background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;line-height:1">←</button>
-      <span style="font-size:16px;font-weight:700;color:var(--text)">AI 뉴스 상담</span>
-    </div>
-    <div id="chat-messages" style="padding:0 12px;display:flex;flex-direction:column;gap:10px;min-height:200px"></div>
-    <div style="padding:12px;display:flex;gap:8px;position:sticky;bottom:0;background:var(--bg);border-top:0.5px solid var(--border)">
-      <input id="chat-input" type="text" placeholder="뉴스에 대해 질문하세요..." style="flex:1;background:var(--surface2);border:0.5px solid var(--border2);border-radius:12px;color:var(--text);font-size:13px;font-family:inherit;padding:10px 14px" onkeydown="if(event.key==='Enter')sendChat()">
-      <button onclick="sendChat()" style="width:40px;height:40px;border-radius:12px;border:none;background:var(--accent);color:#000;font-size:18px;cursor:pointer">↑</button>
-    </div>
-  </div>
-
-  <!-- NAV BAR -->
   <div class="nav-bar">
-    <div class="nav-item active" id="nav-home" onclick="goPage('home')">
-      <span class="nav-icon">📰</span>
-      <span class="nav-label">뉴스</span>
-      <div class="nav-dot"></div>
-    </div>
-    <div class="nav-item" id="nav-fav" onclick="goPage('fav')">
-      <span class="nav-icon">☆</span>
-      <span class="nav-label">즐겨찾기</span>
-      <div class="nav-dot"></div>
-    </div>
-    <div class="nav-item" id="nav-chat" onclick="goPage('chat')">
-      <span class="nav-icon">💬</span>
-      <span class="nav-label">AI 상담</span>
-      <div class="nav-dot"></div>
-    </div>
-    <div class="nav-item" id="nav-settings" onclick="goPage('settings')">
-      <span class="nav-icon">⚙️</span>
-      <span class="nav-label">설정</span>
-      <div class="nav-dot"></div>
-    </div>
+    <div class="nav-item active" id="nav-home" onclick="goPage('home')"><span class="nav-icon">📰</span><span class="nav-lbl">뉴스</span><div class="nav-dot"></div></div>
+    <div class="nav-item" id="nav-fav" onclick="goPage('fav')"><span class="nav-icon" id="fnavico">☆</span><span class="nav-lbl">즐겨찾기</span><div class="nav-dot"></div></div>
+    <div class="nav-item" id="nav-chat" onclick="goPage('chat')"><span class="nav-icon">💬</span><span class="nav-lbl">AI 상담</span><div class="nav-dot"></div></div>
+    <div class="nav-item" id="nav-settings" onclick="goPage('settings')"><span class="nav-icon">⚙️</span><span class="nav-lbl">설정</span><div class="nav-dot"></div></div>
   </div>
 </div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────────────
-let apiKey = localStorage.getItem('newsly_api_key') || '';
-let favorites = JSON.parse(localStorage.getItem('newsly_favs') || '[]');
-let currentCity = localStorage.getItem('newsly_city') || '서울';
-let topCardData = null;
-let briefLoaded = false;
-let chatHistory = [];
+// ── STATE
+let favs = JSON.parse(localStorage.getItem('nly_favs3')||'[]');
+let city = localStorage.getItem('nly_city3')||'서울';
+let articles = [];
+let topArt = null;
+let curTab = '전체';
 
-// ── INIT ───────────────────────────────────────────────────────────
-const today = new Date();
-const days = ['일','월','화','수','목','금','토'];
-document.getElementById('header-date').textContent =
-  `${today.getFullYear()}. ${today.getMonth()+1}. ${today.getDate()} (${days[today.getDay()]})`;
-document.getElementById('city-input').value = currentCity;
-document.getElementById('cur-city-label').textContent = currentCity;
-
-if (!apiKey) {
-  document.getElementById('modal').classList.remove('hidden');
-} else {
-  document.getElementById('modal').classList.add('hidden');
-  loadWeather(currentCity);
-}
+// DATE
+const now = new Date();
+const dayNames=['일','월','화','수','목','금','토'];
+document.getElementById('hdate').textContent=`${now.getFullYear()}. ${now.getMonth()+1}. ${now.getDate()} (${dayNames[now.getDay()]})`;
+document.getElementById('cityinp').value=city;
+document.getElementById('curcity').textContent=city;
 updateFavUI();
 
-// ── API KEY ────────────────────────────────────────────────────────
-function saveApiKey() {
-  const v = document.getElementById('api-key-input').value.trim();
-  if (!v.startsWith('sk-ant-')) { showToast('올바른 API 키를 입력해주세요'); return; }
-  apiKey = v;
-  localStorage.setItem('newsly_api_key', v);
-  document.getElementById('modal').classList.add('hidden');
-  loadWeather(currentCity);
-  showToast('API 키가 저장되었습니다');
-}
-function resetApiKey() {
-  document.getElementById('api-key-input').value = '';
-  document.getElementById('modal').classList.remove('hidden');
+// ── WEATHER (Open-Meteo — no CORS issue, truly free)
+const COORDS={
+  '서울':{la:37.5665,lo:126.978},'부산':{la:35.1796,lo:129.0756},
+  '대구':{la:35.8714,lo:128.6014},'인천':{la:37.4563,lo:126.7052},
+  '광주':{la:35.1595,lo:126.8526},'대전':{la:36.3504,lo:127.3845},
+  '울산':{la:35.5384,lo:129.3114},'제주':{la:33.4996,lo:126.5312},
+  '수원':{la:37.2636,lo:127.0286},'청주':{la:36.6424,lo:127.489},
+  '전주':{la:35.8468,lo:127.1297},'춘천':{la:37.8813,lo:127.7298},
+  '포항':{la:36.0190,lo:129.3435},'창원':{la:35.2280,lo:128.6811},
+};
+const WCode={0:'맑음',1:'대체로 맑음',2:'구름 조금',3:'흐림',45:'안개',51:'이슬비',53:'이슬비',61:'비',63:'비',65:'강한 비',71:'눈',73:'눈',80:'소나기',81:'소나기',95:'뇌우'};
+const WIcon={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',51:'🌦',53:'🌦',61:'🌧',63:'🌧',65:'🌧',71:'❄️',73:'❄️',80:'🌦',81:'🌧',95:'⛈'};
+
+async function loadWeather(c){
+  try{
+    let la,lo;
+    const k=COORDS[c];
+    if(k){la=k.la;lo=k.lo;}
+    else{
+      const g=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(c)}&count=1&language=ko`);
+      const gd=await g.json();
+      if(!gd.results?.length){document.getElementById('wd').textContent='도시를 찾을 수 없어요';return;}
+      la=gd.results[0].latitude;lo=gd.results[0].longitude;
+    }
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${lo}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul&forecast_days=1`);
+    const d=await r.json();
+    const cu=d.current,dl=d.daily,code=cu.weather_code;
+    document.getElementById('wi').textContent=WIcon[code]||'🌤';
+    document.getElementById('wt').textContent=Math.round(cu.temperature_2m)+'°';
+    document.getElementById('wc').textContent=c;
+    document.getElementById('wd').textContent=WCode[code]||'날씨 정보';
+    document.getElementById('wh').textContent=Math.round(cu.relative_humidity_2m);
+    document.getElementById('ww').textContent=Math.round(cu.wind_speed_10m*10)/10;
+    document.getElementById('wf').textContent=Math.round(cu.apparent_temperature);
+    document.getElementById('whl').textContent=`최고 ${Math.round(dl.temperature_2m_max[0])}° · 최저 ${Math.round(dl.temperature_2m_min[0])}°`;
+  }catch(e){document.getElementById('wd').textContent='날씨를 가져올 수 없어요';}
 }
 
-// ── CLAUDE API ─────────────────────────────────────────────────────
-async function callClaude(system, userMsg, useSearch = false) {
-  const body = {
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1200,
-    system,
-    messages: [{ role: 'user', content: userMsg }]
-  };
-  if (useSearch) body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' }
-    , body: JSON.stringify(body)
+function changeCity(){
+  const v=document.getElementById('cityinp').value.trim();
+  if(!v)return;
+  city=v;localStorage.setItem('nly_city3',v);
+  document.getElementById('curcity').textContent=v;
+  loadWeather(v);showToast(`${v} 날씨로 변경됐어요 🌤`);
+}
+
+loadWeather(city);
+
+// ── NEWS via Google News RSS + allOrigins proxy (CORS-free)
+const CAT_KW={
+  '정치':['대통령','국회','여당','야당','정치','장관','의원','선거','정당','청와대','용산','정부'],
+  '경제':['경제','주식','코스피','달러','금리','물가','기업','증시','수출','투자','부동산','금융','반도체'],
+  '사회':['사건','사고','경찰','범죄','화재','재난','법원','판결','복지','교육','학교','의료','환경'],
+  '국제':['미국','중국','일본','유럽','러시아','북한','외교','국제','세계','글로벌','이스라엘','우크라이나','NATO'],
+  '과학·IT':['AI','인공지능','네이버','카카오','스마트폰','우주','과학','기술','구글','애플','메타','테슬라','챗GPT'],
+  '스포츠':['야구','축구','농구','올림픽','월드컵','선수','감독','리그','골프','KBO','NBA','EPL'],
+  '연예':['배우','가수','드라마','영화','아이돌','K팝','연예','방송','예능','콘서트','BTS','블랙핑크'],
+};
+const CAT_EMOJI={'정치':'🏛','경제':'💰','사회':'🔔','국제':'🌍','과학·IT':'💻','스포츠':'⚽','연예':'🎤'};
+const CAT_BG={'정치':'#fff8e1','경제':'#e8f5e9','사회':'#fce4ec','국제':'#e3f2fd','과학·IT':'#f0e8ff','스포츠':'#e0f7fa','연예':'#fff3e0'};
+
+function guessCat(t){
+  for(const[cat,kws]of Object.entries(CAT_KW)){if(kws.some(k=>t.includes(k)))return cat;}
+  return '사회';
+}
+
+function ago(ds){
+  try{const m=(Date.now()-new Date(ds))/60000;if(m<60)return Math.round(m)+'분 전';if(m<1440)return Math.round(m/60)+'시간 전';return Math.round(m/1440)+'일 전';}catch{return '방금 전';}
+}
+
+// Google News RSS — use allorigins.win as CORS proxy
+async function fetchGoogleNews(query){
+  const rssUrl=`https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=ko&gl=KR&ceid=KR:ko`;
+  const proxyUrl=`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+  const r=await fetch(proxyUrl);
+  const d=await r.json();
+  if(!d.contents)return[];
+  const parser=new DOMParser();
+  const xml=parser.parseFromString(d.contents,'text/xml');
+  return Array.from(xml.querySelectorAll('item')).map(item=>({
+    title:(item.querySelector('title')?.textContent||'').replace(/\s*-\s*[^-]+$/,'').trim(),
+    link:item.querySelector('link')?.textContent||'',
+    pubDate:item.querySelector('pubDate')?.textContent||'',
+    source:item.querySelector('source')?.textContent||'Google 뉴스',
+  }));
+}
+
+async function loadNews(){
+  const btn=document.getElementById('lbtn');
+  document.getElementById('llbl').innerHTML='<span class="ld"><span></span><span></span><span></span></span>';
+  document.getElementById('lic').textContent='';
+  btn.disabled=true;
+
+  try{
+    // Fetch general Korean news from Google News
+    const items=await fetchGoogleNews('한국 뉴스');
+    if(!items.length)throw new Error('empty');
+
+    const seen=new Set();
+    articles=items
+      .filter(a=>{if(!a.title||a.title.length<5||seen.has(a.title))return false;seen.add(a.title);return true;})
+      .map(a=>({...a,cat:guessCat(a.title),emoji:CAT_EMOJI[guessCat(a.title)]||'📰',bg:CAT_BG[guessCat(a.title)]||'#eef4ff',time:ago(a.pubDate)}));
+
+    renderNews(articles);
+    document.getElementById('llbl').textContent='업데이트됨 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('lic').textContent='';
+    btn.classList.add('done');btn.disabled=false;
+  }catch(e){
+    document.getElementById('llbl').textContent='다시 시도 ↺';
+    document.getElementById('lic').textContent='⚠️';
+    btn.disabled=false;
+    showToast('뉴스를 가져오지 못했어요. 다시 눌러보세요');
+  }
+}
+
+function renderNews(arts){
+  const show=curTab==='전체'?arts:arts.filter(a=>a.cat===curTab);
+  const disp=show.length?show:arts;
+  if(!disp.length)return;
+  const top=disp[0];topArt=top;
+  document.getElementById('tccat').textContent=top.cat;
+  document.getElementById('tcemoji').textContent=top.emoji;
+  document.getElementById('tctitle').textContent=top.title;
+  document.getElementById('tcsum').textContent='클릭하면 전체 기사로 이동합니다.';
+  document.getElementById('tcsrc').textContent=top.source;
+  document.getElementById('tctime').textContent=top.time;
+  document.getElementById('tcthumb').style.background=top.bg;
+  document.getElementById('tcbody').onclick=()=>top.link&&window.open(top.link,'_blank');
+  const isFv=favs.some(f=>f.title===top.title);
+  const fb=document.getElementById('tcfav');
+  fb.textContent=isFv?'★':'☆';fb.classList.toggle('starred',isFv);
+  document.getElementById('brk').textContent=top.title.length>52?top.title.substring(0,52)+'…':top.title;
+
+  const list=document.getElementById('nlist');list.innerHTML='';
+  disp.slice(1,13).forEach((a,i)=>{
+    const el=document.createElement('div');el.className='ni';
+    const isFv2=favs.some(f=>f.title===a.title);
+    const eid='s'+i+'_'+Date.now();
+    el.innerHTML=`<span class="ni-num">${i+1}</span><div class="ni-body"><span class="ni-cat">${a.cat}</span><p class="ni-title">${a.title}</p><div class="ni-meta"><span><span class="spill">${a.source}</span>${a.time}</span><button class="fav-star ${isFv2?'on':''}" id="${eid}">${isFv2?'★':'☆'}</button></div></div>`;
+    el.querySelector('.ni-title').onclick=()=>a.link&&window.open(a.link,'_blank');
+    el.querySelector('.fav-star').onclick=(e)=>toggleFav(e,eid,a.title,a.cat,a.link);
+    list.appendChild(el);
   });
-  if (!res.ok) throw new Error('API 오류: ' + res.status);
-  const data = await res.json();
-  return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
-// ── WEATHER ────────────────────────────────────────────────────────
-async function loadWeather(city) {
-  document.getElementById('w-desc').textContent = '불러오는 중...';
-  document.getElementById('w-city').textContent = city;
-  try {
-    const text = await callClaude(
-      `날씨 정보를 JSON으로만 반환. 형식: {"icon":"날씨이모지","temp":숫자,"feels":숫자,"desc":"날씨설명","humidity":숫자,"wind":숫자,"high":숫자,"low":숫자} JSON만, 마크다운 없이.`,
-      `${city} 현재 날씨 검색해서 JSON으로 줘`, true
-    );
-    const w = JSON.parse(text.replace(/```json|```/g,'').trim());
-    document.getElementById('w-icon').textContent = w.icon || '🌤';
-    document.getElementById('w-temp').textContent = Math.round(w.temp) + '°';
-    document.getElementById('w-desc').textContent = w.desc || '';
-    document.getElementById('w-hum').textContent = Math.round(w.humidity) + '%';
-    document.getElementById('w-wind').textContent = (w.wind||0) + 'm/s';
-    document.getElementById('w-feel').textContent = Math.round(w.feels) + '°';
-    document.getElementById('w-hilo').textContent = `최고 ${Math.round(w.high)}° / 최저 ${Math.round(w.low)}°`;
-  } catch(e) {
-    document.getElementById('w-desc').textContent = '날씨 정보를 불러올 수 없어요';
-  }
+function setTab(el,tab){
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');curTab=tab;
+  if(articles.length)renderNews(articles);
 }
 
-function changeCity() {
-  const v = document.getElementById('city-input').value.trim();
-  if (!v) return;
-  currentCity = v;
-  localStorage.setItem('newsly_city', v);
-  document.getElementById('cur-city-label').textContent = v;
-  loadWeather(v);
-  showToast(`${v} 날씨로 변경됐어요`);
-}
-
-function askOutfit() {
-  goPage('chat');
-  setTimeout(() => {
-    document.getElementById('chat-input').value = `오늘 ${currentCity} 날씨에 맞는 옷차림 추천해줘`;
-    sendChat();
-  }, 100);
-}
-
-// ── BRIEFING ───────────────────────────────────────────────────────
-async function loadBriefing() {
-  if (briefLoaded) return;
-  const btn = document.getElementById('brief-btn');
-  document.getElementById('brief-label').innerHTML = '<span class="ld"><span></span><span></span><span></span></span>';
-  document.getElementById('brief-icon').textContent = '';
-  btn.disabled = true;
-  try {
-    const dateStr = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
-    const text = await callClaude(
-      `뉴스 브리핑 AI. 오늘: ${dateStr}. JSON만 반환, 마크다운 없이.
-형식: {"breaking":"속보 20자","headline":{"title":"제목","summary":"2-3문장","category":"카테고리","source":"언론사","emoji":"이모지","bg":"연한색 hex"},"items":[{"cat":"카테고리","title":"제목","preview":"한줄요약","source":"언론사","time":"N시간 전"},...],"briefing":"전체브리핑 2-3문장"}
-items 5개, 실제 오늘 뉴스 기반.`,
-      `오늘 ${today.getMonth()+1}월 ${today.getDate()}일 한국 주요 뉴스 검색해서 JSON 브리핑 줘`, true
-    );
-    const p = JSON.parse(text.replace(/```json|```/g,'').trim());
-
-    document.getElementById('breaking-text').textContent = p.breaking || '오늘의 속보';
-    document.getElementById('tc-cat').textContent = p.headline.category;
-    document.getElementById('tc-emoji').textContent = p.headline.emoji || '📰';
-    document.getElementById('tc-title').textContent = p.headline.title;
-    document.getElementById('tc-sum').textContent = p.headline.summary;
-    document.getElementById('tc-src').textContent = p.headline.source;
-    if (p.headline.bg) document.getElementById('tc-thumb').style.background = p.headline.bg;
-    document.getElementById('brief-text').textContent = p.briefing;
-    topCardData = p.headline;
-
-    const list = document.getElementById('news-list');
-    list.innerHTML = '';
-    (p.items || []).forEach((item, i) => {
-      const id = 'item_' + i + '_' + Date.now();
-      const el = document.createElement('div');
-      el.className = 'ni';
-      const isFaved = favorites.some(f => f.title === item.title);
-      el.innerHTML = `
-        <span class="ni-num">${i+1}</span>
-        <div class="ni-body">
-          <span class="ni-cat">${item.cat}</span>
-          <p class="ni-title" onclick="askAbout('${item.title.replace(/'/g,"\\'")}')">${item.title}</p>
-          <p class="ni-prev">${item.preview}</p>
-          <div class="ni-meta">
-            <span>${item.source} · ${item.time}</span>
-            <button class="ni-fav-btn ${isFaved?'starred':''}" id="${id}" onclick="toggleFav(event,'${id}','${item.title.replace(/'/g,"\\'")}','${item.cat}')">${isFaved?'★':'☆'}</button>
-          </div>
-        </div>`;
-      list.appendChild(el);
-    });
-
-    document.getElementById('brief-result').classList.add('open');
-    document.getElementById('brief-label').textContent = '오늘 브리핑 완료 ✓';
-    briefLoaded = true;
-  } catch(e) {
-    document.getElementById('brief-label').textContent = 'AI 뉴스 브리핑 받기';
-    document.getElementById('brief-icon').textContent = '✨';
-    btn.disabled = false;
-    showToast('오류가 발생했어요. 다시 시도해보세요');
-  }
-}
-
-function openTopCard() {
-  if (!topCardData) return;
-  askAbout(topCardData.title);
-}
-
-function askAbout(title) {
-  goPage('chat');
-  setTimeout(() => {
-    document.getElementById('chat-input').value = `"${title}" 뉴스 자세히 알려줘`;
-    sendChat();
-  }, 100);
-}
-
-function openChat(msg) {
-  goPage('chat');
-  setTimeout(() => {
-    document.getElementById('chat-input').value = msg;
-    sendChat();
-  }, 100);
-}
-
-// ── FAVORITES ──────────────────────────────────────────────────────
-function toggleFav(e, id, title, cat) {
+// ── FAVORITES
+function toggleFav(e,eid,title,cat,link){
   e.stopPropagation();
-  const btn = document.getElementById(id);
-  const idx = favorites.findIndex(f => f.title === title);
-  if (idx === -1) {
-    favorites.push({ id, title, cat });
-    if (btn) { btn.textContent = '★'; btn.classList.add('starred'); }
-    showToast('즐겨찾기에 추가됐어요');
-  } else {
-    favorites.splice(idx, 1);
-    if (btn) { btn.textContent = '☆'; btn.classList.remove('starred'); }
-    showToast('즐겨찾기에서 삭제됐어요');
-  }
-  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
-  updateFavUI();
+  const btn=document.getElementById(eid);
+  const idx=favs.findIndex(f=>f.title===title);
+  if(idx===-1){favs.push({title,cat,link});if(btn){btn.textContent='★';btn.classList.add('on');}showToast('즐겨찾기 추가됐어요 ★');}
+  else{favs.splice(idx,1);if(btn){btn.textContent='☆';btn.classList.remove('on');}showToast('즐겨찾기 삭제됐어요');}
+  saveFavs();
 }
-
-function favTopCard() {
-  if (!topCardData) { showToast('먼저 브리핑을 받아주세요'); return; }
-  const btn = document.getElementById('tc-fav-btn');
-  const idx = favorites.findIndex(f => f.title === topCardData.title);
-  if (idx === -1) {
-    favorites.push({ id: 'top', title: topCardData.title, cat: topCardData.category });
-    btn.textContent = '★'; btn.classList.add('starred');
-    showToast('즐겨찾기에 추가됐어요');
-  } else {
-    favorites.splice(idx, 1);
-    btn.textContent = '☆'; btn.classList.remove('starred');
-    showToast('즐겨찾기에서 삭제됐어요');
-  }
-  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
-  updateFavUI();
+function favTop(e){
+  e.stopPropagation();if(!topArt)return;
+  const btn=document.getElementById('tcfav');
+  const idx=favs.findIndex(f=>f.title===topArt.title);
+  if(idx===-1){favs.push({title:topArt.title,cat:topArt.cat,link:topArt.link});btn.textContent='★';btn.classList.add('starred');showToast('즐겨찾기 추가됐어요 ★');}
+  else{favs.splice(idx,1);btn.textContent='☆';btn.classList.remove('starred');showToast('즐겨찾기 삭제됐어요');}
+  saveFavs();
 }
-
-function updateFavUI() {
-  document.getElementById('fav-count-badge').textContent = favorites.length + '개';
-  document.querySelector('#nav-fav .nav-icon').textContent = favorites.length > 0 ? '★' : '☆';
-}
-
-function renderFavs() {
-  const container = document.getElementById('fav-list');
-  if (favorites.length === 0) {
-    container.innerHTML = '<div class="fav-empty"><span class="fav-empty-icon">☆</span>아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>';
-    return;
-  }
-  container.innerHTML = '';
-  favorites.forEach((f, i) => {
-    const el = document.createElement('div');
-    el.className = 'fav-item';
-    el.innerHTML = `
-      <div class="fav-item-body" onclick="askAbout('${f.title.replace(/'/g,"\\'")}')">
-        <div class="fav-item-title">${f.title}</div>
-        <div class="fav-item-cat">${f.cat}</div>
-      </div>
-      <button class="fav-del" onclick="removeFav(${i})">✕</button>`;
-    container.appendChild(el);
+function saveFavs(){localStorage.setItem('nly_favs3',JSON.stringify(favs));updateFavUI();}
+function updateFavUI(){document.getElementById('fbadge').textContent=favs.length+'개';document.getElementById('fnavico').textContent=favs.length?'★':'☆';}
+function renderFavs(){
+  const c=document.getElementById('flist');
+  if(!favs.length){c.innerHTML='<div class="fav-empty"><span class="ei">☆</span>아직 즐겨찾기한 뉴스가 없어요<br>뉴스 옆 ☆을 눌러 저장해보세요</div>';return;}
+  c.innerHTML='';
+  [...favs].reverse().forEach((f,ri)=>{
+    const i=favs.length-1-ri;
+    const el=document.createElement('div');el.className='fav-item';
+    el.innerHTML=`<div class="fav-body"><div class="fav-item-title">${f.title}</div><div class="fav-item-cat">${f.cat}</div></div><button class="fav-del" onclick="removeFav(${i})">✕</button>`;
+    el.querySelector('.fav-body').onclick=()=>f.link&&window.open(f.link,'_blank');
+    c.appendChild(el);
   });
 }
+function removeFav(i){favs.splice(i,1);saveFavs();renderFavs();showToast('삭제됐어요');}
+function clearFavs(){if(!confirm('즐겨찾기를 모두 삭제할까요?'))return;favs=[];saveFavs();renderFavs();showToast('초기화됐어요');}
 
-function removeFav(idx) {
-  favorites.splice(idx, 1);
-  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
-  updateFavUI();
-  renderFavs();
-  showToast('삭제됐어요');
+// ── CHAT
+function sendChat(){
+  const inp=document.getElementById('cinp');
+  const msg=inp.value.trim();if(!msg)return;inp.value='';
+  const c=document.getElementById('cmsgs');
+  const ue=document.createElement('div');ue.className='msg-u';ue.textContent=msg;c.appendChild(ue);
+  const ae=document.createElement('div');ae.className='msg-a';ae.innerHTML='<span class="ld"><span></span><span></span><span></span></span>';c.appendChild(ae);
+  c.scrollTop=c.scrollHeight;
+  setTimeout(()=>{
+    let reply='';
+    const m=msg;
+    if(/옷|코디|입을|뭐 입/.test(m)){
+      const desc=document.getElementById('wd').textContent;
+      const temp=parseInt(document.getElementById('wt').textContent)||20;
+      const wind=parseFloat(document.getElementById('ww').textContent)||0;
+      let adv='';
+      if(temp>=28)adv='반팔·반바지·샌들. 햇빛 강하면 양산과 모자도 챙기세요!';
+      else if(temp>=23)adv='얇은 반팔이나 린넨 소재. 저녁엔 얇은 가디건 하나 챙기세요.';
+      else if(temp>=17)adv='긴팔에 얇은 재킷이나 가디건. 일교차 있으니 레이어드 스타일!';
+      else if(temp>=10)adv='두꺼운 니트나 가을 코트. 스카프도 좋아요!';
+      else adv='두꺼운 패딩·코트, 목도리, 장갑까지! 최대한 따뜻하게 입으세요.';
+      if(wind>7)adv+=' 바람이 강하니 바람막이도 챙기세요.';
+      if(/비|소나기/.test(desc))adv+=' ☔ 우산 필수!';
+      if(/눈/.test(desc))adv+=' ⛄ 미끄럼 주의, 방수 신발 추천!';
+      reply=`오늘 ${city} ${document.getElementById('wt').textContent} (${desc})\n\n👗 추천 옷차림:\n${adv}`;
+    } else if(/날씨|온도|기온/.test(m)){
+      reply=`현재 ${city}: ${document.getElementById('wt').textContent} ${document.getElementById('wd').textContent}\n습도 ${document.getElementById('wh').textContent}% · 바람 ${document.getElementById('ww').textContent}m/s\n체감온도 ${document.getElementById('wf').textContent}°`;
+    } else if(/뉴스|소식|헤드라인|최신/.test(m)){
+      reply=articles.length?`최신 뉴스 (${articles.length}건):\n\n`+articles.slice(0,6).map((a,i)=>`${i+1}. [${a.cat}] ${a.title}`).join('\n'):'먼저 홈에서 뉴스를 불러와 주세요!';
+    } else if(/즐겨|저장/.test(m)){
+      reply=favs.length?`즐겨찾기 ${favs.length}개:\n\n`+favs.map((f,i)=>`${i+1}. ${f.title}`).join('\n'):'아직 즐겨찾기한 뉴스가 없어요.';
+    } else if(/안녕|hello|hi/i.test(m)){
+      reply='안녕하세요! 👋\n\n이렇게 물어보세요:\n• "오늘 뭐 입어야 해?"\n• "지금 날씨 알려줘"\n• "최신 뉴스 보여줘"\n• "즐겨찾기 목록 보여줘"';
+    } else {
+      const matched=articles.filter(a=>a.title.includes(m)).slice(0,3);
+      reply=matched.length?`"${m}" 관련 뉴스:\n\n`+matched.map((a,i)=>`${i+1}. [${a.cat}] ${a.title}\n   ${a.source} · ${a.time}`).join('\n\n'):`"${m}" 관련 뉴스를 찾지 못했어요.\n뉴스를 먼저 불러오거나, 날씨·옷차림을 물어보세요!`;
+    }
+    ae.textContent=reply;c.scrollTop=c.scrollHeight;
+  },600);
+}
+function goChat(msg){goPage('chat');setTimeout(()=>{document.getElementById('cinp').value=msg;sendChat();},150);}
+
+// ── NAV
+function goPage(name){
+  ['home','fav','settings'].forEach(p=>{document.getElementById('page-'+p).style.display='none';});
+  document.getElementById('page-chat').classList.remove('on');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(name==='chat'){document.getElementById('page-chat').classList.add('on');}
+  else{document.getElementById('page-'+name).style.display='block';}
+  const nav=document.getElementById('nav-'+name);if(nav)nav.classList.add('active');
+  if(name==='fav')renderFavs();
 }
 
-function clearFavs() {
-  if (!confirm('즐겨찾기를 모두 삭제할까요?')) return;
-  favorites = [];
-  localStorage.setItem('newsly_favs', JSON.stringify(favorites));
-  updateFavUI();
-  renderFavs();
-  showToast('즐겨찾기가 초기화됐어요');
-}
-
-// ── CHAT ───────────────────────────────────────────────────────────
-async function sendChat() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value = '';
-
-  const container = document.getElementById('chat-messages');
-  const userEl = document.createElement('div');
-  userEl.style.cssText = 'background:var(--accent-dim);border:0.5px solid rgba(232,255,71,0.2);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13px;color:var(--text);line-height:1.6;max-width:85%;align-self:flex-end;margin-left:auto';
-  userEl.textContent = msg;
-  container.appendChild(userEl);
-
-  const aiEl = document.createElement('div');
-  aiEl.style.cssText = 'background:var(--surface);border:0.5px solid var(--border2);border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:13px;color:var(--text2);line-height:1.6;max-width:90%';
-  aiEl.innerHTML = '<span class="ld"><span></span><span></span><span></span></span>';
-  container.appendChild(aiEl);
-  container.scrollTop = container.scrollHeight;
-
-  chatHistory.push({ role: 'user', content: msg });
-
-  try {
-    const body = {
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 800,
-      system: '당신은 뉴스 전문 AI 어시스턴트입니다. 한국어로 친절하고 간결하게 답변하세요.',
-      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-      messages: chatHistory
-    };
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    const reply = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
-    aiEl.textContent = reply;
-    chatHistory.push({ role: 'assistant', content: reply });
-  } catch(e) {
-    aiEl.textContent = '오류가 발생했어요. 다시 시도해보세요.';
-    chatHistory.pop();
-  }
-  container.scrollTop = container.scrollHeight;
-}
-
-// ── NAVIGATION ─────────────────────────────────────────────────────
-function goPage(name) {
-  ['home','fav','chat','settings'].forEach(p => {
-    document.getElementById('page-'+p).style.display = 'none';
-    document.getElementById('nav-'+p).classList.remove('active');
-  });
-  document.getElementById('page-'+name).style.display = 'block';
-  document.getElementById('nav-'+name).classList.add('active');
-  if (name === 'fav') renderFavs();
-}
-
-function setTab(el, cat) {
-  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-}
-
-// ── UTILS ──────────────────────────────────────────────────────────
-function toggleNotif(btn) {
-  btn.textContent = btn.textContent === '🔔' ? '🔕' : '🔔';
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 </script>
 </body>
 </html>
